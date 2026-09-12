@@ -1,0 +1,35 @@
+/**
+ * Editor styles for Language Switcher Block
+ */
+
+.wp-block-lsdp-language-switcher {
+    margin: 1em 0;
+}
+
+.wp-block-lsdp-language-switcher .components-placeholder {
+    min-height: 100px;
+}
+
+/* Disable links in the editor */
+.editor-styles-wrapper .wp-block-lsdp-language-switcher a,
+.block-editor-block-list__block .wp-block-lsdp-language-switcher a {
+    pointer-events: none;
+    cursor: default;
+}
+
+/* Inspector Tabs */
+.lsdp-inspector-tabs .components-tab-panel__tabs {
+    border-bottom: 1px solid #ddd;
+}
+
+.lsdp-inspector-tabs .components-tab-panel__tabs-item {
+    padding: 12px 16px;
+}
+
+.lsdp-inspector-tabs .components-tab-panel__tabs-item.active-tab {
+    border-bottom: 2px solid #1e1e1e;
+}
+
+.editor-styles-wrapper a{
+    color: inherit !important;
+}

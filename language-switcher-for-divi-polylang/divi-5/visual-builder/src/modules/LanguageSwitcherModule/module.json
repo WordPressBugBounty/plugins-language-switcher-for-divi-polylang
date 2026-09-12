@@ -1,0 +1,106 @@
+{
+  "name": "lsdp/language-switcher-for-divi-polylang",
+  "d4Shortcode": "language-switcher-for-divi-polylang",
+  "moduleClassName": "language-switcher-for-divi-polylang",
+  "moduleOrderClassName": "language-switcher-for-divi-polylang",
+  "title": "Language Switcher",
+  "titles": "Language Switchers",
+  "moduleIcon": "lsdp/language-switcher",
+  "category": "module",
+  "attributes": {
+    "module": {
+      "type": "object",
+      "selector": "{{selector}}"
+    },
+    "switcher_layouts": {
+      "type": "object",
+      "default": {
+          "innerContent": {
+            "desktop": {
+              "value": "dropdown"
+            }
+          }
+        }
+    },
+    "show_language_flag": {
+      "type": "object",
+      "default": {
+        "innerContent": {
+          "desktop": {
+            "value": "on"
+          }
+        }
+      }
+    },
+    "show_language_name": {
+      "type": "object",
+      "default": {
+        "innerContent": {
+          "desktop": {
+            "value": "on"
+          }
+        }
+      }
+    },
+    "show_language_code": {
+      "type": "object",
+      "default": {
+        "innerContent": {
+          "desktop": {
+            "value": "off"
+          }
+        }
+      }
+    },
+    "hide_current_language": {
+      "type": "object",
+      "default": {
+        "innerContent": {
+          "desktop": {
+            "value": "off"
+          }
+        }
+      }
+    },
+    "hide_untranslated_language": {
+      "type": "object",
+      "default": {
+        "innerContent": {
+          "desktop": {
+            "value": "off"
+          }
+        }
+      }
+    },
+    "flag_style": {
+      "type": "object",
+      "default": {
+        "innerContent": {
+          "desktop": {
+            "value": {
+              "aspect_ratio": "auto",
+              "flag_width": "20px",
+              "flag_border_radius": "0px"
+            }
+          }
+        }
+      }
+    },
+    "text_style": {
+      "type": "object",
+      "selector": "{{selector}} .lsdp-wrapper ul li.lsdp_active_lang.lsdp_active_lang div:not(.lsdp-lang-image), {{selector}} .lsdp-wrapper ul li.lsdp_active_lang a div:not(.lsdp-lang-image), {{selector}} .lsdp-wrapper ul li a div:not(.lsdp-lang-image), {{selector}} .lsdp-wrapper.dropdown span a div:not(.lsdp-lang-image)"
+    },
+    "background_style": {
+      "type": "object",
+      "selector": "{{selector}} .lsdp-wrapper ul li a, {{selector}} .lsdp-wrapper.dropdown, {{selector}} .lsdp-wrapper.dropdown ul li a"
+    },
+    "container_size": {
+      "type": "object",
+      "selector": "{{selector}} .lsdp-main-wrapper"
+    },
+    "color_filters": {
+      "type": "object",
+      "selector": "{{selector}} .lsdp-wrapper ul li, {{selector}} .lsdp-wrapper.dropdown span"
+    }
+  }
+}

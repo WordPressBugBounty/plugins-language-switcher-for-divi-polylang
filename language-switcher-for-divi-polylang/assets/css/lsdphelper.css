@@ -1,0 +1,17 @@
+button[value="lsdp/language-switcher-for-divi-polylang"]{
+    position: relative;
+}
+button[value="lsdp/language-switcher-for-divi-polylang"] .et-vb-icon--divi-module-menu svg{
+    display: none;
+}
+button[value="lsdp/language-switcher-for-divi-polylang"] .et-vb-icon--divi-module-menu::after{
+    content: "";
+    background-size:25px;
+    background-image: url('../images/lang_switcher.svg');
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 4px;
+    left: 36px;
+    width: 40px;
+    height: 40px;
+}

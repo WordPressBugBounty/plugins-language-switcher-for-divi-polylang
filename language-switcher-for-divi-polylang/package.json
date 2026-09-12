@@ -1,0 +1,37 @@
+{
+  "name": "language-switcher-for-divi-polylang",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "divi-scripts": "1.0.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sass": "^1.91.0"
+  },
+  "scripts": {
+    "start": "divi-scripts start",
+    "build": "divi-scripts build",
+    "zip": "divi-scripts build && divi-scripts zip",
+    "eject": "divi-scripts eject"
+  },
+  "browserslist": {
+    "development": [
+      "last 2 chrome versions",
+      "last 2 firefox versions",
+      "last 2 edge versions"
+    ],
+    "production": [
+      ">1%",
+      "last 4 versions",
+      "Firefox ESR",
+      "not ie < 11"
+    ]
+  },
+  "cde": {
+    "gettext": "language-switcher-for-divi-polylang",
+    "prefix": "lsdp"
+  },
+  "overrides": {
+    "node-sass": "npm:sass@^1.70.0"
+  }
+}

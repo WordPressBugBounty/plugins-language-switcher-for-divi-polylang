@@ -1,0 +1,333 @@
+.lsep-main-wrapper{
+  --lsep-flag-radius: 0px;
+  --lsep-flag-ratio: 4/3;
+  --lsep-normal-bg-color: #fff;
+  --lsep-normal-text-color: #000;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.5;
+}
+/* General reset */
+.lsep-language-list,
+.lsep-language-list li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.lsep-main-wrapper .lsep-language-list{
+  overflow: hidden;
+}
+
+.lsep-main-wrapper .lsep-wrapper a{
+  text-decoration: none;
+}
+
+.lsep-main-wrapper .lsep-wrapper.horizontal {
+  overflow: hidden;
+}
+
+.lsep-main-wrapper .lsep-wrapper.horizontal .lsep-language-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+}
+
+.lsep-main-wrapper .lsep-wrapper.vertical {
+  overflow: hidden;
+}
+
+.lsep-main-wrapper .lsep-wrapper.vertical .lsep-language-list {
+  display: inline-flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  width: max-content;
+  max-width: 100%;
+  gap: 0;
+}
+
+/* Language switcher container */
+.lsep-wrapper {
+    padding: 10px;
+}
+
+/* Language item styling */
+.lsep-lang-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+.lsep-wrapper.horizontal .lsep-lang-item a,
+.lsep-wrapper.vertical .lsep-lang-item a{
+  background-color: var(--lsep-normal-bg-color);
+}
+
+.lsep-wrapper.horizontal .lsep-lang-item {
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.lsep-wrapper.vertical .lsep-lang-item {
+  margin-bottom: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.lsep-wrapper.vertical .lsep-lang-item a {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+.lsep-lang-image{
+  aspect-ratio: var(--lsep-flag-ratio);
+}
+
+/* Flag image styling */
+.lsep-lang-image img {
+    object-fit: cover;
+    border-radius: var(--lsep-flag-radius);
+}
+
+/* Name, code, and flag inline */
+.lsep-lang-image,
+.lsep-lang-name,
+.lsep-lang-code {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+    /* text-transform: capitalize; */
+}
+
+/* Link reset */
+.lsep-lang-item a,
+.lsep-active-language a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--lsep-normal-text-color);
+}
+
+/* Active language button (dropdown trigger) */
+.lsep-active-language {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 4px;
+    color: var(--lsep-normal-text-color);
+}
+
+.lsep-main-wrapper .lsep-wrapper .lsep-lang-name,
+.lsep-main-wrapper .lsep-wrapper .lsep-lang-code {
+    color: inherit;
+}
+
+.lsep-main-wrapper .lsep-wrapper.horizontal .lsep-lang-item a,
+.lsep-main-wrapper .lsep-wrapper.vertical .lsep-lang-item a,
+.lsep-main-wrapper .lsep-wrapper.horizontal .lsep-lang-name,
+.lsep-main-wrapper .lsep-wrapper.horizontal .lsep-lang-code,
+.lsep-main-wrapper .lsep-wrapper.vertical .lsep-lang-name,
+.lsep-main-wrapper .lsep-wrapper.vertical .lsep-lang-code {
+    color: var(--lsep-normal-text-color);
+}
+
+/* DROPDOWN STYLING — same pattern as block switcher:
+   absolute menu (no layout push) + --lsep-switcher-width from JS. */
+.lsep-wrapper.dropdown {
+  position: relative;
+  display: inline-block;
+  width: var(--lsep-switcher-width, max-content);
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 10px 15px;
+  cursor: pointer;
+  outline: none;
+  background-color: var(--lsep-normal-bg-color);
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+.lsep-active-language .lsep-dropdown-icon {
+  transition: transform 0.3s ease;
+  display: inline-block;
+  margin-left: auto;
+}
+
+.lsep-wrapper.dropdown:hover .lsep-dropdown-icon {
+  transform: rotate(180deg);
+}
+
+.lsep-wrapper.dropdown > .lsep-active-language {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.lsep-wrapper.dropdown span a{
+  display: flex;
+  flex-wrap: nowrap;
+  gap: .6rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.lsep-wrapper.dropdown ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  min-width: 100%;
+  box-sizing: border-box;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  -webkit-transition: opacity 0.3s ease-out;
+  transition: opacity 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.lsep-wrapper.dropdown ul li{
+  text-decoration: none;
+  background: var(--lsep-normal-bg-color);
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+.lsep-wrapper.dropdown li a,
+.lsep-wrapper.dropdown li a .lsep-lang-name,
+.lsep-wrapper.dropdown li a .lsep-lang-code {
+  color: var(--lsep-normal-text-color);
+}
+
+.lsep-wrapper.dropdown li a{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px 5px;
+  -webkit-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  white-space: nowrap;
+}
+
+.lsep-dropdown-direction-up .lsep-wrapper.dropdown ul {
+  top: auto;
+  bottom: 100%;
+}
+
+.lsep-wrapper.dropdown.active::after, .lsep-wrapper.dropdown:hover::after {
+  border-width: 0 6px 6px 6px;
+}
+
+.lsep-wrapper.dropdown.active ul, .lsep-wrapper.dropdown:hover ul {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+
+.lsep_elementor_review_notice {
+  padding-bottom: 12px;
+}
+
+.lsep_elementor_review_notice .lsep_elementor_review_wrapper {
+  position: relative;
+  padding: 12px 12px 22px;
+  background: #fff;
+  border: 2px solid #edacfb;
+}
+
+.lsep_elementor_review_notice #lsep_elementor_review_dismiss {
+  position: absolute;
+  bottom: -11px;
+  left: 8px;
+  background: #edacfb;
+  color: #0c0d0e;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: 5px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.lsep_elementor_review_notice .lsep_elementor_review_msg {
+  margin: 0;
+}
+
+.lsep_elementor_review_notice .lsep_elementor_review_intro {
+  margin: 0 0 8px;
+  color: #50575e;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.lsep_elementor_review_notice .lsep_elementor_review_intro strong {
+  font-weight: 700;
+}
+
+.lsep_elementor_review_notice .lsep_elementor_review_rating {
+  margin: 0;
+}
+
+.lsep_elementor_review_notice .lsep_elementor_review_rating a {
+  color: #edacfb;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.lsep_elementor_review_notice .lsep_elementor_review_rating a:hover {
+  color: #d98ef0;
+  text-decoration: none;
+}
+
+.lsep_elementor_review_notice .lsep_elementor_review_stars {
+  color: #f5a623;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.lsep_elementor_demo_btn {
+  position: absolute;
+  bottom: -11px;
+  right: 8px;
+  background: #edacfb;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: 5px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.lsep_elementor_demo_btn a {
+  color: #0c0d0e;
+  text-decoration: none;
+}
+
+.lsep_elementor_demo_btn a:hover {
+  color: #0c0d0e;
+  text-decoration: none;
+}

@@ -1,0 +1,233 @@
+/**
+ * Frontend styles for Language Switcher Block
+ */
+
+/* Base Block Styles */
+.wp-block-lsdp-language-switcher {
+    margin: 1em 0;
+}
+
+.wp-block-lsdp-language-switcher .lsdp-dropdown-container .lsdp-dropdown-button{
+    padding: 0 !important;
+}
+
+.wp-block-lsdp-language-switcher ul,
+ul.wp-block-lsdp-language-switcher {
+    list-style: none;
+    margin: 0;
+    padding: 0.5em !important;
+    display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+}
+
+.wp-block-lsdp-language-switcher ul li,
+ul.wp-block-lsdp-language-switcher li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Layout Variants */
+.lsdp-layout-horizontal {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.lsdp-layout-vertical,
+.wp-block-lsdp-language-switcher ul.lsdp-layout-vertical,
+ul.wp-block-lsdp-language-switcher.lsdp-layout-vertical {
+    /* Block-level flex so margin-left/right:auto alignment works. */
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    width: max-content;
+    max-width: 100%;
+}
+
+.lsdp-layout-vertical > .lsdp-lang-item,
+.wp-block-lsdp-language-switcher ul.lsdp-layout-vertical > li,
+ul.wp-block-lsdp-language-switcher.lsdp-layout-vertical > li {
+    width: 100%;
+}
+
+.lsdp-layout-vertical .lsdp-lang-item a {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Dropdown Layout Styles */
+.lsdp-dropdown-container {
+    position: relative;
+    display: inline-block;
+    width: var(--switcher-width, 115px);
+    max-width: 100%;
+    padding: 0.5em;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: visible;
+}
+
+.lsdp-dropdown-button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start;
+    gap: 0.5em;
+    width: 100%;
+    background: transparent;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    font-size: 1em;
+    text-align: left;
+    color: inherit !important;
+    transition: all 0.2s ease;
+    line-height: 1;
+}
+
+.lsdp-dropdown-button:focus {
+    outline: none;
+}
+
+.lsdp-dropdown-arrow {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75em;
+    transition: transform 0.2s ease;
+    margin-left: auto;
+    line-height: 1;
+}
+
+.lsdp-dropdown-button[aria-expanded="true"] .lsdp-dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.lsdp-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    min-width: 100%;
+    max-width: min(100vw - 2rem, 100%);
+    margin: 0;
+    padding: 0;
+    list-style: none !important;
+    color: inherit;
+    border-top: none;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    z-index: 1000;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.lsdp-dropdown-item {
+    margin: 0;
+    padding: 0;
+}
+
+.lsdp-dropdown-item a {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5em;
+    width: 100% !important;
+    padding: 6px 0 !important;
+    white-space: nowrap !important;
+    text-decoration: none !important;
+    color: inherit;
+    transition: background-color 0.2s ease !important;
+    line-height: 1;
+    box-sizing: border-box !important;
+}
+
+
+.lsdp-dropdown-item.current-lang a {
+    font-weight: 600;
+    box-sizing: border-box !important;
+}
+
+/* Horizontal and Vertical Layout Items */
+.lsdp-lang-item {
+    margin: 0;
+    padding: 0;
+}
+
+.lsdp-lang-item a {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5em;
+    padding: 0.5em 1em;
+    text-decoration: none !important;
+    color: inherit !important;
+    transition: background-color 0.2s ease;
+    line-height: 1;
+}
+
+.lsdp-lang-item a:hover,
+.lsdp-lang-item a:focus {
+    outline: none !important;
+    color: inherit !important;
+}
+
+.lsdp-lang-item.current-lang a {
+    font-weight: 600;
+}
+
+.lsdp-dropdown-button:hover,
+.lsdp-dropdown-button:focus {
+    outline: none !important;
+    color: inherit !important;
+    background-color: transparent !important;
+}
+
+.lsdp-lang-image {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    line-height: 0 !important;
+    margin: 0 !important;
+}
+
+.lsdp-lang-image img,
+.wp-block-lsdp-language-switcher .lsdp-lang-image img,
+.wp-block-lsdp-language-switcher img.flag {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+.lsdp-lang-name,
+.lsdp-lang-code {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    margin: 0;
+}
+
+.lsdp-lang-code {
+    font-size: 0.85em;
+}
+
+/* Accessibility */
+.wp-block-lsdp-language-switcher .screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal;
+}

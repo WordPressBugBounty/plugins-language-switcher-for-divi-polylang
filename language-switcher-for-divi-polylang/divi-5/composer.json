@@ -1,0 +1,9 @@
+{
+    "name": "divi/language-switcher-for-divi-polylang",
+    "autoload": {
+      "psr-4": {
+        "LSDP\\Modules\\": "server/Modules/"
+      }
+    },
+    "require": {}
+  }

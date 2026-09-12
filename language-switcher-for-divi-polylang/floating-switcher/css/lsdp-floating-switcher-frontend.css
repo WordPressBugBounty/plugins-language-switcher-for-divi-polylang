@@ -1,0 +1,532 @@
+/**
+ * Floating Language Switcher - Frontend Styles
+ * Handles the actual floating switcher display on the website
+ */
+
+/* ============================================
+   Base Floating Switcher
+   ============================================ */
+   .lsdp-floating-switcher {
+    display: flex;
+    flex-direction: column-reverse;
+    position: fixed;
+    z-index: 99999;
+    overflow: hidden;
+    padding: var(--lsdp-desktop-padding, 10px 0);
+    border: var(--border-width, 1px) solid var(--border-color, transparent);
+    border-radius: var(--border-radius, 8px);
+    background: var(--bg, #fff);
+    width: var(--lsdp-desktop-width, auto);
+    top: var(--lsdp-desktop-top, unset);
+    right: var(--lsdp-desktop-right, unset);
+    bottom: var(--lsdp-desktop-bottom, unset);
+    left: var(--lsdp-desktop-left, unset);
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.08);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.lsdp-floating-switcher[data-lsdp-desktop-vertical="top"] {
+    flex-direction: column;
+}
+
+.lsdp-floating-switcher[data-lsdp-desktop-vertical="bottom"] {
+    flex-direction: column-reverse;
+}
+
+.lsdp-floating-switcher[data-lsdp-desktop-vertical="top"] .lsdp-language-switcher-inner,
+.lsdp-floating-switcher[data-lsdp-desktop-vertical="top"] .lsdp-switcher-dropdown-list {
+    flex-direction: column;
+}
+
+/* ============================================
+   Switcher Inner Container
+   ============================================ */
+
+.lsdp-language-switcher-inner{
+    padding: 10px 0px 10px 0px !important;
+}
+.lsdp-floating-switcher .lsdp-language-switcher-inner {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.lsdp-ls-dropdown .lsdp-language-switcher-inner {
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+.lsdp-ls-inline .lsdp-language-switcher-inner {
+    flex-direction: row !important;
+    gap: 0;
+    width: auto !important;
+    overflow: visible !important;
+    min-width: unset !important;
+}
+
+.lsdp-ls-inline .lsdp-language-item {
+    flex: 0 0 auto;
+}
+
+.lsdp-ls-inline .lsdp-language-item:hover {
+    background: var(--bg-hover, #444) !important;
+}
+
+.lsdp-ls-inline .lsdp-language-item:hover .lsdp-language-item-name {
+    color: var(--text-hover, #eee) !important;
+}
+
+/* Current language in dropdown mode should not have hover effect */
+.lsdp-ls-dropdown .lsdp-language-item__current:hover,
+.lsdp-ls-dropdown .lsdp-language-item__default:hover {
+    background: transparent !important;
+}
+
+.lsdp-ls-dropdown .lsdp-language-item {
+    width: 100%;
+}
+
+/* ============================================
+   Dropdown List
+   ============================================ */
+.lsdp-switcher-dropdown-list {
+    display: flex;
+    flex-direction: column-reverse;
+    overflow: hidden;
+    transition: max-height var(--transition-duration, 0.2s) ease-in-out;
+    gap: 7px;
+    width: 100%;
+}
+
+/* Open state */
+.lsdp-ls-dropdown.is-open .lsdp-switcher-dropdown-list,
+.lsdp-ls-dropdown[aria-expanded="true"] .lsdp-switcher-dropdown-list {
+    overflow-y: auto;
+    max-height: min(350px, 70vh);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--text) transparent;
+}
+
+/* Transitioning state */
+.lsdp-ls-dropdown.is-transitioning .lsdp-switcher-dropdown-list {
+    overflow-y: hidden !important;
+}
+
+/* Webkit scrollbar styling */
+.lsdp-switcher-dropdown-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.lsdp-switcher-dropdown-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.lsdp-switcher-dropdown-list::-webkit-scrollbar-thumb {
+    background: var(--text, #888);
+    border-radius: 3px;
+}
+
+.lsdp-switcher-dropdown-list::-webkit-scrollbar-thumb:hover {
+    background: var(--text-hover, #555);
+}
+
+/* ============================================
+   Language Items
+   ============================================ */
+   /* ============================================
+   Remove WordPress/Browser Default Pseudo-elements
+   ============================================ */
+.lsdp-language-item::before,
+.lsdp-language-item::after,
+.lsdp-language-item__current::before,
+.lsdp-language-item__current::after,
+.lsdp-language-item__default::before,
+.lsdp-language-item__default::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* Remove any checkbox/button styling */
+.lsdp-language-item[role="button"]::before,
+.lsdp-language-item[role="button"]::after {
+    content: none !important;
+    display: none !important;
+}
+
+   .lsdp-language-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    text-decoration: none;
+    box-sizing: border-box;
+    color: var(--text, #000);
+    font-size: var(--font-size, 14px);
+    line-height: 1.5;
+    font-weight: 400;
+    font-family: inherit;
+    font-style: normal;
+    font-variant: normal;
+    text-transform: none;
+    letter-spacing: normal;
+    word-spacing: normal;
+    transition: all var(--transition-duration, 0.2s) ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Dropdown items use transparent fill so alpha --bg on the container
+   (Transparent preset) is not stacked twice and rendered opaque. */
+.lsdp-switcher-dropdown-list .lsdp-language-item {
+    background: transparent !important;
+    color: var(--text, #000) !important;
+}
+
+/* Dropdown items hover - background AND text color */
+.lsdp-switcher-dropdown-list .lsdp-language-item:hover {
+    background: var(--bg-hover, #f3f3f3) !important;
+    color: var(--text-hover, #000) !important;
+}
+
+/* Make sure text span inherits the hover color */
+.lsdp-switcher-dropdown-list .lsdp-language-item:hover .lsdp-language-item-name {
+    color: var(--text-hover, #000) !important;
+}
+
+/* Current language control */
+.lsdp-ls-dropdown .lsdp-language-item__current {
+    cursor: default;
+    background: transparent !important;
+    color: var(--text, #000) !important;
+}
+
+.lsdp-ls-dropdown .lsdp-language-item__default {
+    pointer-events: none;
+    cursor: default;
+}
+
+/* Dropdown arrow */
+.lsdp-dropdown-arrow {
+    margin-left: auto;
+    flex-shrink: 0;
+    pointer-events: none;
+    width: 12px;
+    height: 8px;
+    transition: transform var(--transition-duration, 0.2s) ease;
+}
+
+.lsdp-ls-dropdown.is-open .lsdp-language-item__current .lsdp-dropdown-arrow,
+.lsdp-ls-dropdown[aria-expanded="true"] .lsdp-language-item__current .lsdp-dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* When current language is a button control (for dropdown) */
+.lsdp-language-item__current[role="button"] {
+    pointer-events: all;
+    cursor: pointer;
+}
+
+/* Focus styles */
+.lsdp-language-item:focus {
+    outline: none;
+}
+
+.lsdp-language-item:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: -2px;
+}
+
+/* ============================================
+   Language Names
+   ============================================ */
+.lsdp-language-item-name {
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: inherit;
+}
+
+/* ============================================
+   Flag Images
+   ============================================ */
+.lsdp-flag-image {
+    width: var(--flag-size, 18px);
+    height: auto;
+    border-radius: var(--flag-radius, 2px);
+    aspect-ratio: var(--aspect-ratio, 4/3);
+    object-fit: cover;
+    flex-shrink: 0;
+    display: block;
+}
+
+.lsdp-flag-square {
+    aspect-ratio: 1;
+}
+
+.lsdp-flag-rounded {
+    border-radius: 50%;
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+/* Hidden but accessible */
+[hidden] {
+    display: none !important;
+}
+
+/* Inert elements */
+[inert] {
+    pointer-events: none;
+    cursor: default;
+    user-select: none;
+}
+
+[inert] * {
+    pointer-events: none;
+    cursor: default;
+    user-select: none;
+}
+
+/* Skip translation attribute */
+[data-no-translation] {
+    /* Marker for translation plugins to skip */
+}
+
+/* ============================================
+   Animations & Transitions
+   ============================================ */
+@keyframes lsdp-fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.lsdp-floating-switcher {
+    animation: lsdp-fadeIn 0.3s ease-out;
+    z-index: 99999;
+}
+
+.lsdp-language-item-name-mobile {
+    display: none;
+}
+
+.lsdp-flag-slot {
+    display: none;
+    align-items: center;
+}
+
+.lsdp-flag-slot-desktop-before,
+.lsdp-flag-slot-desktop-after {
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+@media screen and (max-width: 767px) {
+    .lsdp-floating-switcher {
+        top: var(--lsdp-mobile-top, unset);
+        right: var(--lsdp-mobile-right, unset);
+        bottom: var(--lsdp-mobile-bottom, unset);
+        left: var(--lsdp-mobile-left, unset);
+        width: var(--lsdp-mobile-width, auto);
+        padding: var(--lsdp-mobile-padding, 10px 0);
+    }
+
+    .lsdp-floating-switcher[data-lsdp-mobile-vertical="top"] {
+        flex-direction: column;
+    }
+
+    .lsdp-floating-switcher[data-lsdp-mobile-vertical="bottom"] {
+        flex-direction: column-reverse;
+    }
+
+    .lsdp-floating-switcher[data-lsdp-mobile-vertical="top"] .lsdp-language-switcher-inner,
+    .lsdp-floating-switcher[data-lsdp-mobile-vertical="top"] .lsdp-switcher-dropdown-list {
+        flex-direction: column;
+    }
+
+    .lsdp-language-item-name-desktop {
+        display: none;
+    }
+
+    .lsdp-language-item-name-mobile {
+        display: inline-block;
+    }
+
+    .lsdp-flag-slot-desktop-before,
+    .lsdp-flag-slot-desktop-after {
+        display: none;
+    }
+
+    .lsdp-flag-slot-mobile-before,
+    .lsdp-flag-slot-mobile-after {
+        display: inline-flex;
+    }
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================ */
+@media screen and (max-width: 767px) {
+    .lsdp-language-item {
+        padding: 10px 16px;
+        line-height: 1.5;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .lsdp-floating-switcher {
+        /* Further adjustments for small screens */
+        font-size: 13px;
+    }
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+@media print {
+    .lsdp-floating-switcher {
+        display: none !important;
+    }
+}
+
+/* ============================================
+   High Contrast Mode Support
+   ============================================ */
+@media (prefers-contrast: high) {
+    .lsdp-language-item {
+        border: 1px solid currentColor;
+    }
+
+    .lsdp-language-item:hover {
+        background: var(--text);
+        color: var(--bg);
+    }
+}
+
+/* ============================================
+   Reduced Motion Support
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    .lsdp-floating-switcher,
+    .lsdp-language-item,
+    .lsdp-switcher-dropdown-list {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* ============================================
+   Dark Mode Support (Optional)
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+    /* Use CSS variables, so theme colors will apply automatically */
+    /* Only add overrides if needed */
+}
+
+/* ============================================
+   RTL Support
+   ============================================ */
+[dir="rtl"] .lsdp-language-item {
+    text-align: right;
+}
+
+[dir="rtl"] .lsdp-flag-image {
+    order: 2;
+}
+
+/* ============================================
+   Admin Bar Adjustment
+   ============================================ */
+body.admin-bar .lsdp-floating-switcher[data-lsdp-desktop-vertical="top"] {
+    top: 32px;
+}
+
+@media screen and (max-width: 782px) {
+    body.admin-bar .lsdp-floating-switcher[data-lsdp-desktop-vertical="top"] {
+        top: 46px;
+    }
+
+    body.admin-bar .lsdp-floating-switcher[data-lsdp-mobile-vertical="top"] {
+        top: 46px;
+    }
+}
+
+/* ============================================
+   Z-Index Management
+   ============================================ */
+/* If you need to adjust for specific themes, add here */
+/* Example: */
+/* body.some-theme .lsdp-floating-switcher {
+    z-index: 999999;
+} */
+
+/* ============================================
+   Custom Hover Effects
+   ============================================ */
+.lsdp-language-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.lsdp-language-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-hover, rgba(0, 0, 0, 0.05));
+    transition: left var(--transition-duration, 0.2s) ease;
+    pointer-events: none;
+}
+
+.lsdp-language-item:hover::before {
+    left: 0;
+}
+
+/* Disable hover effect on current language */
+.lsdp-language-item__default::before,
+.lsdp-language-item__current:not([role="button"])::before {
+    display: none;
+}
+
+/* ============================================
+   Loading State (Optional)
+   ============================================ */
+.lsdp-floating-switcher.is-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* ============================================
+   Error State (Optional)
+   ============================================ */
+.lsdp-floating-switcher.has-error {
+    border: 2px solid #d63638;
+}
+
+/* ============================================
+   Compatibility Fixes
+   ============================================ */
+/* Reset any theme overrides */
+.lsdp-floating-switcher * {
+    box-sizing: border-box;
+}
+
+/* Ensure flags don't inherit weird image styles from themes */
+.lsdp-flag-image {
+    max-width: none;
+    height: auto;
+    vertical-align: middle;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+}

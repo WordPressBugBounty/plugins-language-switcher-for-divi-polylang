@@ -1,0 +1,1147 @@
+/**
+ * Floating Switcher Admin CSS
+ * Clean, maintainable version with lsdp- prefix
+ */
+
+/* ============================================
+   CSS Variables & Base
+   ============================================ */
+   :root {
+    --lsdp-primary: #2271b1;
+    --lsdp-primary-hover: #135e96;
+    --lsdp-text-primary: #1d2327;
+    --lsdp-text-secondary: #646970;
+    --lsdp-border: #dcdcde;
+    --lsdp-background: #f0f0f1;
+    --lsdp-card-bg: #ffffff;
+    --lsdp-accent: #2271b1;
+    --lsdp-success: #00a32a;
+    --lsdp-error: #d63638;
+}
+
+/* Notice styling within tab content */
+.lsdp-tab-content-wrapper .notice {
+    margin: 20px 0;
+}
+
+/* Adjust floater app container when inside dashboard wrap */
+.lsdp-dashboard-wrap .lsdp-floater-app-container {
+    background: transparent;
+    padding: 0;
+}
+
+/* ============================================
+   Main Layout
+   ============================================ */
+.lsdp-ls-view {
+    display: flex;
+    gap: 30px;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 20px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.lsdp-floater-app-container,
+.lsdp-floater-settings__wrapper {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.lsdp-floater-settings__wrapper {
+    display: flex;
+    gap: 30px;
+}
+
+.lsdp-floater-settings__left {
+    flex: 0 0 400px;
+    min-width: 0;
+    max-width: 400px;
+}
+
+.lsdp-floater-settings__right {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ============================================
+   Settings Box
+   ============================================ */
+.lsdp-settings-box {
+    background: var(--lsdp-card-bg);
+    border: 1px solid var(--lsdp-border);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.lsdp-settings-box .lsdp-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 20px;
+    border-bottom: 1px solid var(--lsdp-border);
+    cursor: pointer;
+    user-select: none;
+}
+
+.lsdp-settings-box.lsdp-collapsible .lsdp-header:hover {
+    background-color: #f9f9f9;
+}
+
+.lsdp-settings-box .lsdp-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--lsdp-text-primary);
+    margin: 0;
+}
+
+.lsdp-settings-box .lsdp-body {
+    padding: 20px;
+}
+
+.lsdp-settings-box.lsdp-collapsible .lsdp-body {
+    display: none;
+}
+
+.lsdp-settings-box.lsdp-collapsible.open .lsdp-body {
+    display: block;
+}
+
+/* Chevron icon */
+.lsdp-chevron {
+    transition: transform 0.2s ease;
+    transform: rotate(-90deg);
+}
+
+.lsdp-settings-box.lsdp-collapsible.open .lsdp-chevron {
+    transform: rotate(0deg);
+}
+
+/* ============================================
+   Sticky Preview Box
+   ============================================ */
+.lsdp-sticky-box {
+    position: sticky;
+    top: 32px;
+}
+
+/* ============================================
+   Language Switcher Preview
+   ============================================ */
+.lsdp-language-switcher-preview__container {
+    position: relative;
+    background-image: var(--lsdp-preview-bg);
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ============================================
+   Preview: Dropdown (like TranslatePress - Collapsed by Default)
+   ============================================ */
+
+/* Preview container - simulate page corner */
+.lsdp-language-switcher-preview-box {
+    width: 100%;
+    height: 280px;
+    position: relative;
+    background: var(--lsdp-preview-bg);
+    background-size: cover;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Switcher positioned absolutely in preview to show position settings */
+.lsdp-language-switcher-preview-box .lsdp-floating-switcher {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    border: var(--border-width, 1px) solid var(--border-color, transparent);
+    border-radius: var(--border-radius, 8px);
+    background: var(--bg, #000);
+    padding: var(--switcher-padding, 10px 0px) !important;
+    width: var(--switcher-width, auto);
+    min-width: unset !important;
+    overflow: hidden;
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.05);
+    position: absolute !important;
+    bottom: var(--bottom, auto);
+    top: var(--top, auto);
+    right: var(--right, auto);
+    left: var(--left, auto);
+}
+
+/* Top-positioned: normal column order */
+.lsdp-language-switcher-preview-box .lsdp-switcher-position-top {
+    flex-direction: column !important;
+}
+
+/* Inner wrapper */
+.lsdp-language-switcher-preview-box .lsdp-language-switcher-inner {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+}
+
+.lsdp-language-switcher-preview-box .lsdp-switcher-position-top .lsdp-language-switcher-inner {
+    flex-direction: column !important;
+}
+
+/* Current/default language item - ALWAYS VISIBLE
+   Keep item bg transparent so semi-transparent --bg on the container
+   (e.g. Transparent preset) is not double-painted and looks opaque. */
+.lsdp-language-switcher-preview-box .lsdp-language-item__default {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px !important;
+    color: var(--text, #fff) !important;
+    background: transparent !important;
+    cursor: default;
+    text-decoration: none !important;
+    box-sizing: border-box;
+    line-height: 1.5;
+}
+
+/* Dropdown list - HIDDEN by default, SHOWN on hover */
+.lsdp-language-switcher-preview-box .lsdp-switcher-dropdown-list {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.lsdp-language-switcher-preview-box .lsdp-switcher-position-top .lsdp-switcher-dropdown-list {
+    flex-direction: column !important;
+}
+
+/* SHOW dropdown on hover */
+.lsdp-language-switcher-preview-box .lsdp-floating-switcher:hover .lsdp-switcher-dropdown-list {
+    max-height: 500px;
+    overflow: visible;
+}
+
+/* All language items in dropdown — transparent so container --bg shows through */
+.lsdp-language-switcher-preview-box .lsdp-switcher-dropdown-list .lsdp-language-item {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px !important;
+    color: var(--text, #fff) !important;
+    background: transparent !important;
+    text-decoration: none !important;
+    transition: background var(--transition-duration, 0.2s) ease;
+    cursor: pointer;
+    box-sizing: border-box;
+    line-height: 1.5;
+}
+
+.lsdp-language-switcher-preview-box .lsdp-switcher-dropdown-list .lsdp-language-item:hover {
+    background: var(--bg-hover, #444) !important;
+    color: var(--text-hover, #eee) !important;
+}
+
+/* Flag images */
+.lsdp-language-switcher-preview-box .lsdp-flag-image {
+    width: var(--flag-size, 18px) !important;
+    height: auto;
+    border-radius: var(--flag-radius, 2px);
+    aspect-ratio: var(--aspect-ratio, 4/3);
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* Language names */
+.lsdp-language-switcher-preview-box .lsdp-language-item-name {
+    font-size: var(--font-size, 14px);
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-weight: 400;
+}
+
+.lsdp-language-switcher {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.lsdp-floating-switcher {
+    display: flex;
+    flex-direction: column-reverse;
+    border: var(--border-width, 1px) solid var(--border-color, transparent);
+    border-radius: var(--border-radius, 8px);
+    background: var(--bg, #fff);
+    padding: var(--switcher-padding, 10px 0);
+    width: var(--switcher-width, auto);
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.lsdp-ls-dropdown .lsdp-language-switcher-inner {
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 10px 0px 10px 0px !important;
+}
+
+.lsdp-language-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    text-decoration: none;
+    color: var(--text, #000);
+    font-size: var(--font-size, 14px);
+    line-height: 1.5;
+    transition: all var(--transition-duration, 0.2s) ease;
+    cursor: pointer;
+}
+
+.lsdp-language-item:hover {
+    background: var(--bg-hover, #f3f3f3);
+    color: var(--text-hover, #000);
+}
+
+.lsdp-language-item__default {
+    pointer-events: none;
+}
+
+.lsdp-flag-image {
+    width: var(--flag-size, 18px);
+    height: auto;
+    border-radius: var(--flag-radius, 2px);
+    aspect-ratio: var(--aspect-ratio, 4/3);
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.lsdp-language-item-name {
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lsdp-switcher-dropdown-list {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 7px;
+}
+/* Dropdown Arrow Icon - main preview only */
+.lsdp-dropdown-arrow {
+    margin-left: auto !important;
+    transition: transform 0.3s ease !important;
+    flex-shrink: 0 !important;
+    pointer-events: none !important;
+    width: 12px !important;
+    height: 8px !important;
+}
+
+/* For preview box */
+.lsdp-language-switcher-preview-box .lsdp-language-item__default .lsdp-dropdown-arrow {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.lsdp-preset-switcher-preview .lsdp-dropdown-arrow {
+    display: none !important;
+}
+
+/* Rotate arrow when hovering preview */
+.lsdp-language-switcher-preview-box .lsdp-floating-switcher:hover .lsdp-dropdown-arrow {
+    transform: rotate(180deg) !important;
+}
+
+/* Ensure items have flex layout */
+.lsdp-language-switcher-preview-box .lsdp-language-item__default,
+.lsdp-preset-switcher-preview .lsdp-language-item__default,
+.lsdp-language-item {
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* ============================================
+   Settings Actions
+   ============================================ */
+.lsdp-settings-actions {
+    display: flex;
+    gap: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.lsdp-submit-btn {
+    background: var(--lsdp-primary);
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lsdp-submit-btn:hover {
+    background: var(--lsdp-primary-hover);
+}
+
+.lsdp-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.lsdp-button-secondary {
+    background: transparent;
+    color: var(--lsdp-text-primary);
+    border: 1px solid var(--lsdp-border);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.lsdp-button-secondary:hover {
+    border-color: var(--lsdp-primary);
+    color: var(--lsdp-primary);
+}
+
+.lsdp-button-secondary:disabled,
+.lsdp-button-secondary:disabled:hover {
+    opacity: 0.6;
+    cursor: not-allowed;
+    border-color: var(--lsdp-border);
+    color: var(--lsdp-text-secondary);
+    background: transparent;
+}
+
+/* ============================================
+   Form Fields Base
+   ============================================ */
+
+.lsdp-field--row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 3px;
+}
+
+.lsdp-field--column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.lsdp-field__label {
+    font-size: 14px;
+    color: var(--lsdp-text-primary);
+    width: var(--lsdp-field-label-width, auto);
+}
+
+.lsdp-primary-text-bold {
+    font-weight: 600;
+}
+
+.lsdp-primary-text {
+    font-size: 14px;
+    color: var(--lsdp-text-primary);
+}
+
+.lsdp-description-text {
+    font-size: 13px;
+    color: var(--lsdp-text-secondary);
+    line-height: 1.5;
+}
+
+.lsdp-separator {
+    height: 1px;
+    background: var(--lsdp-border);
+    margin: 16px 0;
+}
+
+/* ============================================
+   Toggle Switch - Override WordPress Admin Styles
+   ============================================ */
+.lsdp-toggle-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.lsdp-toggle-inner {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background: #8c8f94;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+/* Higher specificity to override WordPress defaults */
+.lsdp-toggle-inner input[type="checkbox"].lsdp-toggle-input {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+    cursor: pointer !important;
+    z-index: 2 !important;
+    border: none !important;
+    box-shadow: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+}
+
+.lsdp-toggle-input:checked + .lsdp-toggle-slider {
+    transform: translateX(20px);
+}
+
+.lsdp-toggle-inner:has(.lsdp-toggle-input:checked) {
+    background: var(--lsdp-success);
+}
+
+.lsdp-toggle-slider {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Toggle Status Field */
+.lsdp-toggle-status-field {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ============================================
+   Radio Groups
+   ============================================ */
+.lsdp-radio-group__wrapper > .lsdp-radio-group {
+    margin-top: 12px; /* Adjust this value if you want a larger or smaller gap */
+}
+
+.lsdp-radio-group {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
+    gap: 12px;
+    width: 100%;
+}
+
+.lsdp-radio-option {
+    display: flex;
+    align-items: stretch;
+}
+
+.lsdp-radio-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 4px 4px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--lsdp-text-primary);
+    box-sizing: border-box;
+}
+
+/* Radio button - override WordPress defaults */
+.lsdp-radio-label input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0 !important;
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    border: 2px solid #8c8f94 !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    cursor: pointer !important;
+    position: relative !important;
+    vertical-align: middle !important;
+    transition: all 0.1s ease !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+.lsdp-radio-label input[type="radio"]:hover {
+    border-color: var(--lsdp-primary, #2271b1) !important;
+}
+
+.lsdp-radio-label input[type="radio"]:checked {
+    border-color: var(--lsdp-primary, #2271b1) !important;
+    background: var(--lsdp-primary, #2271b1) !important;
+}
+
+.lsdp-radio-label input[type="radio"]:checked::before {
+    content: '' !important;
+    display: block !important;
+    width: 6px !important;
+    height: 6px !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
+}
+
+/* Remove any WordPress default pseudo-elements */
+.lsdp-radio-label input[type="radio"]::after {
+    display: none !important;
+}
+
+/* ============================================
+   Color Picker
+   ============================================ */
+.lsdp-color__wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 200px;
+    justify-content: flex-start;
+}
+
+.lsdp-color-input {
+    width: 50px;
+    height: 30px;
+    border: 1px solid var(--lsdp-border);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.lsdp-color-input:hover {
+    border-color: var(--lsdp-primary);
+}
+
+.lsdp-color-input:focus-visible {
+    outline: 2px solid var(--lsdp-primary);
+    outline-offset: 2px;
+}
+
+.lsdp-color-code {
+    font-size: 13px;
+    min-width: 90px;
+    text-align: left;
+    font-family: 'Courier New', monospace;
+    color: var(--lsdp-text-secondary);
+}
+
+/* ============================================
+   Number Input
+   ============================================ */
+.lsdp-number__wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 200px;
+    justify-content: flex-start;
+}
+
+.lsdp-number-input {
+    width: 70px;
+    height: 30px;
+    border: 1px solid var(--lsdp-border);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.lsdp-number__wrapper > .lsdp-primary-text {
+    min-width: 90px;
+    text-align: left;
+}
+
+.lsdp-number-input:focus {
+    outline: none;
+    border-color: var(--lsdp-primary);
+    box-shadow: 0 0 0 1px var(--lsdp-primary);
+}
+
+/* ============================================
+   Quad Border Radius
+   ============================================ */
+.lsdp-quad-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.lsdp-quad-radius-corner {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.lsdp-corner-label {
+    font-size: 12px;
+    color: var(--lsdp-text-secondary);
+}
+
+/* ============================================
+   Preset Cards
+   ============================================ */
+.lsdp-preset-applier {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.lsdp-preset-card {
+    border: 1px solid var(--lsdp-border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    min-height: 200px;
+}
+
+/* Active/Selected preset card */
+.lsdp-preset-card-active {
+    border: 2px solid var(--lsdp-primary);
+    box-shadow: 0 0 0 3px rgba(45, 108, 223, 0.1);
+    background: rgba(45, 108, 223, 0.02);
+}
+
+.lsdp-apply-btn.lsdp-apply-btn-active {
+    background: var(--lsdp-primary);
+    color: #fff;
+    font-weight: 600;
+}
+
+.lsdp-apply-btn:disabled,
+.lsdp-apply-btn-active:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.lsdp-apply-btn.lsdp-apply-btn-active:hover {
+    background: var(--lsdp-primary-hover);
+}
+
+.lsdp-preview-rect {
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 180px;
+}
+
+.lsdp-apply-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: #f0f0f1;
+    color: var(--lsdp-text-primary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.lsdp-apply-btn:hover {
+    background: var(--lsdp-primary);
+    color: #fff;
+}
+
+/* Inline (side-by-side) preview styles */
+.lsdp-language-switcher-preview-box .lsdp-ls-inline .lsdp-language-switcher-inner,
+.lsdp-preset-switcher-preview.lsdp-ls-inline .lsdp-language-switcher-inner {
+    display: flex !important;
+    align-items: center;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+.lsdp-preset-switcher-preview.lsdp-ls-inline .lsdp-language-switcher-inner {
+    flex-wrap: wrap;
+}
+
+.lsdp-language-switcher-preview-box .lsdp-ls-inline .lsdp-language-item,
+.lsdp-preset-switcher-preview.lsdp-ls-inline .lsdp-language-item {
+    flex: 0 0 auto;
+    padding: 8px 10px !important;
+    line-height: 1.5;
+}
+
+.lsdp-language-switcher-preview-box .lsdp-ls-inline .lsdp-language-item:hover,
+.lsdp-preset-switcher-preview.lsdp-ls-inline .lsdp-language-item:hover {
+    background: var(--bg-hover, #444) !important;
+}
+
+/* ============================================
+   Layout Customizer
+   ============================================ */
+.lsdp-layout-customizer-field {
+    width: 100%;
+}
+
+.lsdp-lc-mode-toggle {
+    display: flex;
+    gap: 8px;
+}
+
+.lsdp-lc-mode-button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid var(--lsdp-border);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--lsdp-text-primary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 9rem;
+}
+
+.lsdp-lc-mode-button:hover {
+    border-color: var(--lsdp-primary);
+    color: var(--lsdp-primary);
+}
+
+.lsdp-lc-mode-button.active {
+    background: var(--lsdp-primary);
+    border-color: var(--lsdp-primary);
+    color: #fff;
+}
+
+.lsdp-lc-mode-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.lsdp-lc-mode-button:disabled:hover {
+    border-color: var(--lsdp-border);
+    color: var(--lsdp-text-primary);
+}
+
+.lsdp-lc-mode-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+.lsdp-lc-settings-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.lsdp-lc-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.lsdp-lc-subfield {
+    margin-bottom: 16px;
+}
+
+.lsdp-lc-subfield:last-child {
+    margin-bottom: 0;
+}
+
+/* Better spacing for radio options */
+.lsdp-layout-customizer-field .lsdp-radio-option {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f9f9f9;
+    border: 1px solid var(--lsdp-border);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.lsdp-layout-customizer-field .lsdp-radio-option:hover {
+    background: #f0f0f0;
+    border-color: var(--lsdp-primary);
+}
+
+/* Highlight selected radio option */
+.lsdp-layout-customizer-field .lsdp-radio-option:has(input:checked) {
+    background: #e8f4fd;
+    border-color: var(--lsdp-primary);
+}
+
+/* ============================================
+   Custom CSS Editor
+   ============================================ */
+.lsdp-custom-css-editor {
+    width: 100%;
+}
+
+.lsdp-custom-css-editor textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 12px;
+    border: 1px solid var(--lsdp-border);
+    border-radius: 4px;
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    resize: vertical;
+}
+
+.lsdp-custom-css-editor textarea:focus {
+    outline: none;
+    border-color: var(--lsdp-primary);
+    box-shadow: 0 0 0 1px var(--lsdp-primary);
+}
+
+/* ============================================
+   Preset Card Inline Confirmation
+   ============================================ */
+.lsdp-preset-confirm-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.98);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100;
+    border-radius: 8px;
+}
+
+.lsdp-preset-confirm-content {
+    text-align: center;
+    max-width: 280px;
+}
+
+.lsdp-preset-confirm-title {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: var(--lsdp-text-primary);
+    line-height: 1.5;
+}
+
+.lsdp-preset-confirm-title strong {
+    font-weight: 600;
+    color: var(--lsdp-primary);
+}
+
+.lsdp-preset-confirm-warning {
+    margin: 0 0 20px 0;
+    font-size: 12px;
+    color: #d63638;
+    line-height: 1.4;
+}
+
+.lsdp-preset-confirm-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.lsdp-preset-confirm-btn {
+    width: 100%;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.lsdp-preset-confirm-btn-primary {
+    background: var(--lsdp-primary);
+    color: #fff;
+}
+
+.lsdp-preset-confirm-btn-primary:hover {
+    background: var(--lsdp-primary-hover);
+}
+
+.lsdp-preset-confirm-btn-secondary {
+    background: transparent;
+    color: var(--lsdp-text-secondary);
+    border: 1px solid var(--lsdp-border);
+}
+
+.lsdp-preset-confirm-btn-secondary:hover {
+    background: #f0f0f1;
+    color: var(--lsdp-text-primary);
+}
+
+/* ============================================
+   Responsive Design (matches Get Started tab)
+   ============================================ */
+
+/* Tablet: stack preview above settings */
+@media screen and (max-width: 992px) {
+    .lsdp-ls-view {
+        gap: 20px;
+        padding: 0;
+        max-width: 100%;
+    }
+
+    .lsdp-floater-settings__wrapper {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .lsdp-floater-settings__left,
+    .lsdp-floater-settings__right {
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .lsdp-sticky-box {
+        position: relative;
+        top: 0;
+    }
+
+    .lsdp-settings-box,
+    .lsdp-settings-box .lsdp-header,
+    .lsdp-settings-box .lsdp-body,
+    .lsdp-language-switcher-preview-box,
+    .lsdp-preset-card,
+    .lsdp-layout-customizer-field,
+    .lsdp-radio-group__wrapper {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .lsdp-preset-applier {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lsdp-field--row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .lsdp-field--row .lsdp-lc-mode-toggle {
+        width: 100%;
+    }
+}
+
+/* Mobile: single column, compact spacing */
+@media screen and (max-width: 560px) {
+    .lsdp-ls-view {
+        gap: 16px;
+    }
+
+    .lsdp-floater-settings__wrapper {
+        gap: 16px;
+    }
+
+    .lsdp-settings-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .lsdp-submit-btn,
+    .lsdp-button-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .lsdp-settings-box .lsdp-header {
+        padding: 16px;
+    }
+
+    .lsdp-settings-box .lsdp-body {
+        padding: 16px;
+    }
+
+    .lsdp-language-switcher-preview-box {
+        height: 220px;
+    }
+
+    .lsdp-preview-rect {
+        padding: 24px 16px;
+        min-height: 140px;
+    }
+
+    .lsdp-preset-applier {
+        grid-template-columns: 1fr;
+    }
+
+    .lsdp-preset-card {
+        min-height: 0;
+    }
+
+    .lsdp-lc-mode-toggle {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .lsdp-lc-mode-button {
+        width: 100%;
+    }
+
+    .lsdp-radio-group {
+        grid-template-columns: 1fr;
+    }
+
+    .lsdp-quad-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lsdp-layout-customizer-field.lsdp-field--row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .lsdp-toggle-status-field {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .lsdp-color__wrapper,
+    .lsdp-number__wrapper {
+        width: 100%;
+    }
+
+    .lsdp-preset-confirm-overlay {
+        padding: 16px;
+    }
+
+    .lsdp-preset-confirm-content {
+        max-width: 100%;
+    }
+}

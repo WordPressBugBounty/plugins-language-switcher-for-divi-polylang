@@ -1,0 +1,106 @@
+{
+  "landingPage": "/wp-admin/admin.php?page=lsdp-get-started&tab=floating-switcher",
+  "preferredVersions": {
+    "php": "8.2",
+    "wp": "latest"
+  },
+  "phpExtensionBundles": [
+    "kitchen-sink"
+  ],
+  "features": {
+    "networking": true
+  },
+  "steps": [
+    {
+      "step": "login",
+      "username": "admin",
+      "password": "password"
+    },
+    {
+      "step": "setSiteOptions",
+      "options": {
+        "permalink_structure": "/%postname%/"
+      }
+    },
+    {
+      "step": "installTheme",
+      "themeData": {
+        "resource": "wordpress.org/themes",
+        "slug": "astra"
+      },
+      "options": {
+        "activate": true
+      }
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/wp-content/mu-plugins/disable-elementor-onboarding.php",
+      "data": "<?php\nadd_action('init', function () {\n    delete_transient('elementor_activation_redirect');\n    update_option('elementor_onboarded', true);\n    update_option('elementor_tracker_notice', '1');\n}, 1);\n\nadd_action('admin_init', function () {\n    delete_transient('elementor_activation_redirect');\n    update_option('elementor_onboarded', true);\n\n    if (!isset($_GET['page'])) {\n        return;\n    }\n\n    $page = sanitize_key(wp_unslash($_GET['page']));\n    if (in_array($page, array('elementor-app', 'elementor-getting-started', 'go_elementor_pro'), true)) {\n        wp_safe_redirect(admin_url('admin.php?page=lsdp-get-started'));\n        exit;\n    }\n}, 1);"
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/wp-content/mu-plugins/disable-polylang-wizard.php",
+      "data": "<?php\nadd_action('init', function () {\n    delete_transient('pll_activation_redirect');\n    update_option('pll_dismissed_notices', ['wizard']);\n    update_option('pll_setup_wizard_done', true);\n    update_option('pll_setup_wizard_step', 'last');\n});\n\nadd_action('admin_init', function () {\n    if (isset($_GET['page']) && $_GET['page'] === 'mlang_wizard') {\n        wp_safe_redirect(admin_url());\n        exit;\n    }\n});"
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/wp-content/mu-plugins/skip-lsdp-activation-redirect.php",
+      "data": "<?php\nadd_action('admin_init', function () {\n    delete_option('lsdp_plugin_activation_redirect');\n}, 0);"
+    },
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "wordpress.org/plugins",
+        "slug": "polylang"
+      },
+      "options": {
+        "activate": true
+      }
+    },
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "wordpress.org/plugins",
+        "slug": "elementor"
+      },
+      "options": {
+        "activate": true
+      }
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/wp-content/mu-plugins/set-polylang-options.php",
+      "data": "<?php\nadd_action('plugins_loaded', function () {\n    if (!function_exists('PLL')) return;\n\n    if (!PLL()->model->get_languages_list()) {\n        PLL()->model->add_language([\n            'name' => 'English', 'slug' => 'en', 'locale' => 'en_US', 'rtl' => 0, 'flag_code' => 'us', 'term_group' => 0\n        ]);\n        PLL()->model->add_language([\n            'name' => 'Français', 'slug' => 'fr', 'locale' => 'fr_FR', 'rtl' => 0, 'flag_code' => 'fr', 'term_group' => 0\n        ]);\n        PLL()->model->add_language([\n            'name' => 'Español', 'slug' => 'es', 'locale' => 'es_ES', 'rtl' => 0, 'flag_code' => 'es', 'term_group' => 0\n        ]);\n        if (method_exists(PLL()->model, 'clean_languages_cache')) {\n            PLL()->model->clean_languages_cache();\n        }\n    }\n\n    $options = get_option('polylang', array());\n    if (!is_array($options)) {\n        $options = array();\n    }\n    $options['force_lang'] = 1;\n    $options['rewrite'] = true;\n    $options['hide_default'] = true;\n    update_option('polylang', $options);\n\n    update_option('pll_dismissed_notices', ['wizard']);\n});"
+    },
+    {
+      "step": "importWxr",
+      "file": {
+        "resource": "url",
+        "url": "https://raw.githubusercontent.com/CoolPluginsTeam/wp-playground-repo/main/language-switcher/language-switcher.xml"
+      }
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php\nrequire '/wordpress/wp-load.php';\n\n// 1) Pretty permalinks required for /es/hogar/ directory URLs.\nupdate_option('permalink_structure', '/%postname%/');\n\n// 2) Polylang directory URL mode (/es/, /fr/).\n$options = get_option('polylang', array());\nif (!is_array($options)) {\n  $options = array();\n}\n$options['force_lang'] = 1;\n$options['rewrite'] = true;\n$options['hide_default'] = true;\nupdate_option('polylang', $options);\n\n// 3) Re-link translations (Playground remaps WXR post IDs).\nif (function_exists('pll_set_post_language') && function_exists('pll_save_post_translations')) {\n  $map = array(\n    'en' => 'home',\n    'fr' => 'maison',\n    'es' => 'hogar',\n  );\n\n  $translations = array();\n  foreach ($map as $lang => $slug) {\n    $p = get_page_by_path($slug);\n    if (!$p) {\n      continue;\n    }\n    pll_set_post_language((int) $p->ID, $lang);\n    $translations[$lang] = (int) $p->ID;\n  }\n\n  if (count($translations) > 1) {\n    pll_save_post_translations($translations);\n  }\n\n  if (function_exists('PLL') && method_exists(PLL()->model, 'clean_languages_cache')) {\n    PLL()->model->clean_languages_cache();\n  }\n}\n\n// 4) Set Home as front page after languages/links are ready.\n$page = get_page_by_path('home');\nif ($page) {\n  update_option('show_on_front', 'page');\n  update_option('page_on_front', (int) $page->ID);\n}\n\n// 5) Flush rewrites so /es/hogar/ and /fr/maison/ resolve.\ndelete_option('rewrite_rules');\nflush_rewrite_rules(false);\necho 'polylang urls ready';\n"
+    },
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "wordpress.org/plugins",
+        "slug": "language-switcher-for-divi-polylang"
+      },
+      "options": {
+        "activate": false
+      }
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php\nrequire '/wordpress/wp-load.php';\n\n$plugin = 'language-switcher-for-divi-polylang/language-switcher-for-divi-polylang.php';\n$plugins = get_option('active_plugins', array());\nif (!is_array($plugins)) {\n  $plugins = array();\n}\nif (!in_array($plugin, $plugins, true)) {\n  $plugins[] = $plugin;\n  sort($plugins);\n  update_option('active_plugins', $plugins);\n}\n\nupdate_option('lsdp-v', '1.1.0');\nupdate_option('lsdp-type', 'FREE');\nif (!get_option('lsdp_initial_save_version')) {\n  add_option('lsdp_initial_save_version', '1.1.0');\n}\nif (!get_option('lsdp-installDate')) {\n  add_option('lsdp-installDate', gmdate('Y-m-d H:i:s'));\n}\ndelete_option('lsdp_plugin_activation_redirect');\n\nupdate_option('lsdp_floating_switcher_config', array(\n  'enabled' => true,\n  'enableCustomCss' => true,\n  'type' => 'dropdown',\n  'bgColor' => '#000000',\n  'bgHoverColor' => '#444444',\n  'textColor' => '#ffffff',\n  'textHoverColor' => '#eeeeee',\n  'borderColor' => 'transparent',\n  'borderWidth' => 1,\n  'flagRadius' => 2,\n  'borderRadius' => array(8, 8, 0, 0),\n  'size' => 'normal',\n  'flagShape' => 'rect',\n  'customCss' => '',\n  'layoutCustomizer' => array(\n    'desktop' => array(\n      'position' => 'bottom-right',\n      'width' => 'default',\n      'customWidth' => 216,\n      'padding' => 'default',\n      'customPadding' => 0,\n      'flagIconPosition' => 'before',\n      'languageNames' => 'full',\n    ),\n    'mobile' => array(\n      'position' => 'top-right',\n      'width' => 'default',\n      'customWidth' => 216,\n      'padding' => 'default',\n      'customPadding' => 0,\n      'flagIconPosition' => 'before',\n      'languageNames' => 'full',\n    ),\n  ),\n));\n\necho 'lsdp soft-activated';\n"
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/wp-content/mu-plugins/force-lsdp-dashboard-redirect.php",
+      "data": "<?php\nadd_action('admin_init', function () {\n    if (!is_user_logged_in() || !current_user_can('manage_options')) {\n        return;\n    }\n\n    if (!is_admin()) {\n        return;\n    }\n\n    if (defined('DOING_AJAX') && DOING_AJAX) {\n        return;\n    }\n\n    if (isset($_COOKIE['lsdp_dashboard_redirect_done'])) {\n        return;\n    }\n\n    if (isset($_GET['page']) && $_GET['page'] === 'lsdp-get-started') {\n        setcookie('lsdp_dashboard_redirect_done', '1', time() + 3600, COOKIEPATH, COOKIE_DOMAIN, is_ssl(), true);\n        return;\n    }\n\n    setcookie('lsdp_dashboard_redirect_done', '1', time() + 3600, COOKIEPATH, COOKIE_DOMAIN, is_ssl(), true);\n    wp_safe_redirect(admin_url('admin.php?page=lsdp-get-started'));\n    exit;\n});"
+    }
+  ]
+}
