@@ -1,0 +1,1 @@
+# plugins-language-switcher-for-divi-polylang
