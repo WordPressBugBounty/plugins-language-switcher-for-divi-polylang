@@ -236,6 +236,7 @@ class LSDP_Floating_Switcher_Settings {
 				'customPadding'    => 0,
 				'flagIconPosition' => 'before',
 				'languageNames'    => 'full',
+				'openOn'           => 'hover',
 			),
 			'mobile'  => array(
 				'position'         => 'bottom-right',
@@ -245,6 +246,7 @@ class LSDP_Floating_Switcher_Settings {
 				'customPadding'    => 0,
 				'flagIconPosition' => 'before',
 				'languageNames'    => 'full',
+				'openOn'           => 'click',
 			),
 		);
 
@@ -531,6 +533,12 @@ class LSDP_Floating_Switcher_Settings {
 				$sanitized['layoutCustomizer'][ $device ]['languageNames'] = in_array( $layout['languageNames'] ?? '', array( 'full', 'short', 'none' ), true )
 				? $layout['languageNames']
 				: 'full';
+
+				// Dropdown open behaviour per device (desktop defaults to hover, mobile to click).
+				$default_open_on = ( 'mobile' === $device ) ? 'click' : 'hover';
+				$sanitized['layoutCustomizer'][ $device ]['openOn'] = in_array( $layout['openOn'] ?? '', array( 'hover', 'click' ), true )
+				? $layout['openOn']
+				: $default_open_on;
 			} else {
 				// If device config missing or invalid, use defaults
 				$sanitized['layoutCustomizer'][ $device ] = $default_layouts[ $device ];

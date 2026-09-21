@@ -13,8 +13,21 @@ class LSDP_Module extends Component {
     super(props);
     this.state = {
       languageData: null,
-      currentLang: null
+      currentLang: null,
+      dropdownOpen: false
     };
+    this.handleDropdownClick = this.handleDropdownClick.bind(this);
+  }
+
+  handleDropdownClick(e) {
+    const style = this.props.lsdp_style ? this.props.lsdp_style : 'dropdown';
+    const openOnClick = this.props.lsdp_open_dropdown_on_click === 'on';
+    if ('dropdown' !== style || !openOnClick) {
+      return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState((prev) => ({ dropdownOpen: !prev.dropdownOpen }));
   }
 
   componentDidMount() {
@@ -23,9 +36,11 @@ class LSDP_Module extends Component {
       const currentLang = window.ETBuilderBackendDynamic && window.ETBuilderBackendDynamic.lsdpGlobalObj &&  window.ETBuilderBackendDynamic.lsdpGlobalObj.lsdpCurrentLang ? window.ETBuilderBackendDynamic.lsdpGlobalObj.lsdpCurrentLang : '';
       this.setState({ polylangData, currentLang });
       const thisModule = document.querySelector('.lsdp-wrapper.dropdown');
-      const parentRow = thisModule.closest('.et_pb_row');
-      if (parentRow) {
-        parentRow.style.setProperty('z-index', '999');
+      if (thisModule) {
+        const parentRow = thisModule.closest('.et_pb_row');
+        if (parentRow) {
+          parentRow.style.setProperty('z-index', '999');
+        }
       }
     }, 1000);
   }
@@ -37,19 +52,30 @@ class LSDP_Module extends Component {
 
 
   render() {
-    const { polylangData, currentLang } = this.state;
+    const { polylangData, currentLang, dropdownOpen } = this.state;
     const style = this.props.lsdp_style ? this.props.lsdp_style : 'dropdown';
     const flagDisplay = this.props.lsdp_flag_visibility ? this.props.lsdp_flag_visibility : 'on';
     const nameDisplay = this.props.lsdp_language_name_visibility ? this.props.lsdp_language_name_visibility : 'on';
     const codeDisplay = this.props.lsdp_language_code_visibility ? this.props.lsdp_language_code_visibility : 'off';
     const hideCurrentLang = this.props.lsdp_current_lang_visibility ? this.props.lsdp_current_lang_visibility : 'off';
     const hideUntranslateLang = this.props.lsdp_unstranslated_lang_visibility ? this.props.lsdp_unstranslated_lang_visibility : 'off';
+    const openOnClick = 'dropdown' === style && this.props.lsdp_open_dropdown_on_click === 'on';
     const pluginUrl=window.ETBuilderBackendDynamic && window.ETBuilderBackendDynamic.lsdpGlobalObj && window.ETBuilderBackendDynamic.lsdpGlobalObj.lsdpPluginUrl ? window.ETBuilderBackendDynamic.lsdpGlobalObj.lsdpPluginUrl : '';
+    const wrapperClass = [
+      'lsdp-wrapper',
+      style,
+      openOnClick ? 'lsdp-open-on-click' : '',
+      openOnClick && dropdownOpen ? 'active' : '',
+    ].filter(Boolean).join(' ');
  
     return (
       polylangData && Object.keys(polylangData) && Object.keys(polylangData).length > 0? (
         <>
-        <div className={`lsdp-wrapper ${style}`}>
+        <div
+          className={wrapperClass}
+          data-lsdp-open-on={openOnClick ? 'click' : 'hover'}
+          onClick={openOnClick ? this.handleDropdownClick : undefined}
+        >
         {'dropdown' === style &&
           (
             polylangData && polylangData[currentLang] ? (

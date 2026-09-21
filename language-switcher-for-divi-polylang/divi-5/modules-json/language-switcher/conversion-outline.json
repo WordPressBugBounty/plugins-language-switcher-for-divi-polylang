@@ -54,6 +54,7 @@
     "lsdp_language_code_visibility": "show_language_code.*.show_language_code",
     "lsdp_current_lang_visibility": "hide_current_language.*.hide_current_language",
     "lsdp_unstranslated_lang_visibility": "hide_untranslated_language.*.hide_untranslated_language",
+    "lsdp_open_dropdown_on_click": "open_dropdown_on_click.*.open_dropdown_on_click",
     "lsdp_flag_ratio": "flag_style.decoration.aspect_ratio.*.aspect_ratio",
     "lsdp_flag_width": "flag_style.decoration.flag_width.*.flag_width",
     "lsdp_flag_radius": "flag_style.decoration.flag_border_radius.*.flag_border_radius",

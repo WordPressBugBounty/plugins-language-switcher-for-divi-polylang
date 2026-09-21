@@ -71,6 +71,7 @@ add_action(
 						'lsdp_language_code_visibility'      => 'off',
 						'lsdp_current_lang_visibility'       => 'off',
 						'lsdp_unstranslated_lang_visibility' => 'off',
+						'lsdp_open_dropdown_on_click'    => 'off',
 						// Flag styling
 						'lsdp_flag_ratio'                    => '',
 						'lsdp_flag_width'                    => '',
@@ -97,6 +98,7 @@ add_action(
 					'show_language_code'         => $atts['lsdp_language_code_visibility'],
 					'hide_current_language'      => $atts['lsdp_current_lang_visibility'],
 					'hide_untranslated_language' => $atts['lsdp_unstranslated_lang_visibility'],
+					'open_dropdown_on_click'     => isset( $atts['lsdp_open_dropdown_on_click'] ) ? $atts['lsdp_open_dropdown_on_click'] : 'off',
 				);
 
 				if ( ! function_exists( 'pll_the_languages' ) || ! function_exists( 'pll_current_language' ) ) {
@@ -110,6 +112,9 @@ add_action(
 
 				$layout     = sanitize_html_class( $props['switcher_layouts'] ) ?: 'dropdown';
 				$inner_html = \LSDP\Modules\LanguageSwitcherModule\LanguageSwitcherModule::render_content( $props );
+				$open_on_click = ( 'dropdown' === $layout && 'on' === $props['open_dropdown_on_click'] );
+				$wrapper_class = $layout . ( $open_on_click ? ' lsdp-open-on-click' : '' );
+				$open_on_attr  = $open_on_click ? 'click' : 'hover';
 
 				// ── Build scoped CSS from D4 styling attributes ────────────────
 				$css_rules = array();
@@ -213,10 +218,11 @@ add_action(
 				}
 
 				return sprintf(
-					'%s<div id="%s" class="et_pb_module lsdp_language_switcher_for_divi_polylang"><div class="lsdp-main-wrapper"><div class="lsdp-wrapper %s">%s</div></div></div>',
+					'%s<div id="%s" class="et_pb_module lsdp_language_switcher_for_divi_polylang"><div class="lsdp-main-wrapper"><div class="lsdp-wrapper %s" data-lsdp-open-on="%s">%s</div></div></div>',
 					$style_tag,
 					esc_attr( $uid ),
-					esc_attr( $layout ),
+					esc_attr( $wrapper_class ),
+					esc_attr( $open_on_attr ),
 					$inner_html
 				);
 			}

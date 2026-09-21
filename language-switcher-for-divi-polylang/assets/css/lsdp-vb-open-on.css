@@ -1,0 +1,17 @@
+/**
+ * Divi Visual Builder: click-open mode must not open on hover.
+ * Higher specificity than style-dbp.min.css builder selectors.
+ */
+.et_divi_builder #et_builder_outer_content .lsdp-wrapper.dropdown.lsdp-open-on-click:hover ul,
+.lsdp-wrapper.dropdown.lsdp-open-on-click:hover ul {
+	opacity: 0 !important;
+	pointer-events: none !important;
+}
+
+.et_divi_builder #et_builder_outer_content .lsdp-wrapper.dropdown.lsdp-open-on-click.active ul,
+.et_divi_builder #et_builder_outer_content .lsdp-wrapper.dropdown.lsdp-open-on-click.active:hover ul,
+.lsdp-wrapper.dropdown.lsdp-open-on-click.active ul,
+.lsdp-wrapper.dropdown.lsdp-open-on-click.active:hover ul {
+	opacity: 1 !important;
+	pointer-events: auto !important;
+}

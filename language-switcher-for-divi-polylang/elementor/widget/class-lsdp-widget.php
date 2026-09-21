@@ -198,6 +198,18 @@ class LSDP_Widget extends Widget_Base {
 			)
 		);
 
+		$this->add_control(
+			'lsep_language_switcher_open_on_click',
+			array(
+				'label'     => __( 'Open dropdown on click', 'language-switcher-for-divi-polylang' ),
+				'type'      => Controls_Manager::SWITCHER,
+				'default'   => '',
+				'condition' => array(
+					'lsep_language_switcher_type' => 'dropdown',
+				),
+			)
+		);
+
 		if ( ! get_option( 'lsep_elementor_review_notice_dismiss' ) ) {
 			$review_nonce = wp_create_nonce( 'lsep_elementor_review' );
 			$url          = admin_url( 'admin-ajax.php' );
@@ -784,7 +796,10 @@ class LSDP_Widget extends Widget_Base {
 		$switcher_html  = '';
 		$switcher_html .= '<div class="lsep-main-wrapper">';
 		if ( 'dropdown' === $settings['lsep_language_switcher_type'] ) {
-			$switcher_html .= '<div class="lsep-wrapper dropdown">';
+			$open_on_click  = isset( $settings['lsep_language_switcher_open_on_click'] ) && 'yes' === $settings['lsep_language_switcher_open_on_click'];
+			$open_on_attr   = $open_on_click ? 'click' : 'hover';
+			$open_on_class  = $open_on_click ? ' lsep-open-on-click' : '';
+			$switcher_html .= '<div class="lsep-wrapper dropdown' . esc_attr( $open_on_class ) . '" data-lsdp-open-on="' . esc_attr( $open_on_attr ) . '">';
 			$switcher_html .= $this->lsep_render_dropdown_switcher( $settings, $lsep_data );
 			$switcher_html .= '</div>';
 		} else {

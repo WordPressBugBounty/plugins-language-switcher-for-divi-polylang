@@ -152,18 +152,48 @@
                 this.toggle();
             });
 
-            // Hover handlers: Open on hover (desktop only, min-width: 768px)
             const mobileBreakpoint = (window.lsdpFloaterFrontend && window.lsdpFloaterFrontend.mobileBreakpoint) || 768;
-            if (window.matchMedia(`(min-width: ${mobileBreakpoint}px)`).matches) {
-                this.switcher.addEventListener('mouseenter', () => {
-                    clearTimeout(this.closeTimeout); // Cancel any pending close
-                    this.open();
-                });
+            this.mobileQuery = window.matchMedia(`(max-width: ${mobileBreakpoint - 1}px)`);
 
-                this.switcher.addEventListener('mouseleave', () => {
-                    // Delay close to prevent accidental closes during mouse movement
+            const bindHoverOpen = () => {
+                if (this._hoverEnter) {
+                    this.switcher.removeEventListener('mouseenter', this._hoverEnter);
+                    this.switcher.removeEventListener('mouseleave', this._hoverLeave);
+                    this._hoverEnter = null;
+                    this._hoverLeave = null;
+                }
+
+                if (!this.shouldOpenOnHover()) {
+                    return;
+                }
+
+                this._hoverEnter = () => {
+                    clearTimeout(this.closeTimeout);
+                    this.open();
+                };
+                this._hoverLeave = () => {
                     this.closeTimeout = setTimeout(() => this.close(), 200);
-                });
+                };
+
+                this.switcher.addEventListener('mouseenter', this._hoverEnter);
+                this.switcher.addEventListener('mouseleave', this._hoverLeave);
+            };
+
+            this.shouldOpenOnHover = () => {
+                const isMobile = this.mobileQuery.matches;
+                const openOn = isMobile
+                    ? (this.switcher.getAttribute('data-lsdp-mobile-open-on') || 'click')
+                    : (this.switcher.getAttribute('data-lsdp-desktop-open-on') || 'hover');
+
+                return openOn === 'hover';
+            };
+
+            bindHoverOpen();
+
+            if (typeof this.mobileQuery.addEventListener === 'function') {
+                this.mobileQuery.addEventListener('change', bindHoverOpen);
+            } else if (typeof this.mobileQuery.addListener === 'function') {
+                this.mobileQuery.addListener(bindHoverOpen);
             }
 
             // Keyboard navigation for the current language button

@@ -16,8 +16,17 @@ class LSDP_Module extends ET_Builder_Module {
 	);
 	
 	public function init() {
-		if(!et_core_is_fb_enabled()){
-			wp_enqueue_script( 'lsdp-module-js', LSDP_URL . 'assets/js/lsdp_module_frontend.js', [], LSDP, true);
+		if ( ! et_core_is_fb_enabled() ) {
+			wp_enqueue_script( 'lsdp-module-js', LSDP_URL . 'assets/js/lsdp_module_frontend.js', array(), LSDP, true );
+		} else {
+			// Visual Builder: force click-mode CSS above Divi Builder Plugin selectors.
+			$vb_css = LSDP_DIR . 'assets/css/lsdp-vb-open-on.css';
+			wp_enqueue_style(
+				'lsdp-vb-open-on',
+				LSDP_URL . 'assets/css/lsdp-vb-open-on.css',
+				array(),
+				file_exists( $vb_css ) ? (string) filemtime( $vb_css ) : LSDP
+			);
 		}
 		
 		$this->name = esc_html__( 'Language Switcher', 'language-switcher-for-divi-polylang' );
@@ -135,6 +144,16 @@ class LSDP_Module extends ET_Builder_Module {
 				'options'     => array('on','off'),
 				'toggle_slug' => 'main_content'
 			),
+			'lsdp_open_dropdown_on_click'        => array(
+				'label'       => esc_html__( 'Open dropdown on click', 'language-switcher-for-divi-polylang' ),
+				'type'        => 'yes_no_button',
+				'options'     => array( 'on', 'off' ),
+				'default'     => 'off',
+				'toggle_slug' => 'main_content',
+				'show_if'     => array(
+					'lsdp_style' => 'dropdown',
+				),
+			),
 			'lsdp_flag_ratio'                    => array(
 				'label'       => esc_html__( 'Aspect Ratio', 'language-switcher-for-divi-polylang' ),
 				'type'        => 'select',
@@ -193,6 +212,7 @@ class LSDP_Module extends ET_Builder_Module {
 			$code_display          = ! isset( $attrs['lsdp_language_code_visibility'] ) ? 'off' : $attrs['lsdp_language_code_visibility'];
 			$hide_current_lang     = ! isset( $attrs['lsdp_current_lang_visibility'] ) ? 'off' : $attrs['lsdp_current_lang_visibility'];
 			$hide_untranslate_lang = ! isset( $attrs['lsdp_unstranslated_lang_visibility'] ) ? 'off' : $attrs['lsdp_unstranslated_lang_visibility'];
+			$open_on_click         = ! isset( $attrs['lsdp_open_dropdown_on_click'] ) ? 'off' : $attrs['lsdp_open_dropdown_on_click'];
 			$display_content       = in_array( 'on', array( $flag_display, $name_display, $code_display ) ) || in_array( 'off', array( $hide_current_lang, $hide_untranslate_lang ) );
 
 			if ( $display_content ) {
@@ -268,8 +288,12 @@ class LSDP_Module extends ET_Builder_Module {
 					$html .='</a></li>';
 				}
 
+				$open_on_click_mode = ( 'dropdown' === $style && 'on' === $open_on_click );
+				$open_on_class      = $open_on_click_mode ? ' lsdp-open-on-click' : '';
+				$open_on_attr       = $open_on_click_mode ? 'click' : 'hover';
+
 				$output = sprintf(
-					' <div id="lsdp-wrapper" class="lsdp-wrapper %1$s">
+					' <div id="lsdp-wrapper" class="lsdp-wrapper %1$s%4$s" data-lsdp-open-on="%5$s">
 				%3$s
 				<ul class="lsdp-language-list">
 				%2$s
@@ -277,7 +301,9 @@ class LSDP_Module extends ET_Builder_Module {
 				</div>',
 					esc_attr( $style ),
 					$html,
-					$active_span
+					$active_span,
+					esc_attr( $open_on_class ),
+					esc_attr( $open_on_attr )
 				);
 
 				return $output;

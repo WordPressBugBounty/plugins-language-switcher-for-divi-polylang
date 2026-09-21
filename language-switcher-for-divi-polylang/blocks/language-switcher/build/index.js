@@ -188,6 +188,10 @@
             customLanguages: {
                 type: 'array',
                 default: []
+            },
+            openOn: {
+                type: 'string',
+                default: 'hover'
             }
         },
         supports: {
@@ -612,6 +616,45 @@
                             }
                         }
                     })(option);
+                }
+            }
+
+            // Toggle under "Hides languages with no translation"; only when Layout is Dropdown.
+            if (attributes.dropdown === 'dropdown') {
+                var openOnToggle = el(ToggleControl, {
+                    key: 'openOn',
+                    label: __('Open dropdown on click', 'language-switcher-for-divi-polylang'),
+                    checked: attributes.openOn === 'click',
+                    onChange: function (value) {
+                        setAttributes({ openOn: value ? 'click' : 'hover' });
+                    },
+                    __nextHasNoMarginBottom: true
+                });
+
+                var hideNoTranslationIndex = -1;
+                for (var i = 0; i < controls.length; i++) {
+                    if (controls[i] && controls[i].key === 'hide_if_no_translation') {
+                        hideNoTranslationIndex = i;
+                        break;
+                    }
+                }
+                if (hideNoTranslationIndex >= 0) {
+                    controls.splice(hideNoTranslationIndex + 1, 0, openOnToggle);
+                } else {
+                    controls.push(openOnToggle);
+                }
+
+                var layoutIndex = -1;
+                for (var j = 0; j < defaultTabControls.length; j++) {
+                    if (defaultTabControls[j] && defaultTabControls[j].key === 'dropdown') {
+                        layoutIndex = j;
+                        break;
+                    }
+                }
+                if (layoutIndex >= 0) {
+                    defaultTabControls.splice(layoutIndex + 1, 0, openOnToggle);
+                } else {
+                    defaultTabControls.push(openOnToggle);
                 }
             }
 

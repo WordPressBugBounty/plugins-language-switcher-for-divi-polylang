@@ -337,6 +337,12 @@ class LSDP_Floating_Switcher_Frontend {
 		}
 
 		$layout_class = $is_dropdown ? 'lsdp-ls-dropdown' : 'lsdp-ls-inline';
+		$desktop_open = in_array( $desktop_layout['openOn'] ?? '', array( 'hover', 'click' ), true )
+			? $desktop_layout['openOn']
+			: 'hover';
+		$mobile_open  = in_array( $mobile_layout['openOn'] ?? '', array( 'hover', 'click' ), true )
+			? $mobile_layout['openOn']
+			: 'click';
 		?>
 		<nav class="lsdp-language-switcher lsdp-floating-switcher <?php echo esc_attr( $layout_class ); ?>"
 			style="<?php echo esc_attr( $styles ); ?>"
@@ -344,6 +350,8 @@ class LSDP_Floating_Switcher_Frontend {
 			aria-label="<?php esc_attr_e( 'Website language selector', 'language-switcher-for-divi-polylang' ); ?>"
 			data-lsdp-desktop-vertical="<?php echo esc_attr( $this->get_layout_vertical( $desktop_layout ) ); ?>"
 			data-lsdp-mobile-vertical="<?php echo esc_attr( $this->get_layout_vertical( $mobile_layout ) ); ?>"
+			data-lsdp-desktop-open-on="<?php echo esc_attr( $desktop_open ); ?>"
+			data-lsdp-mobile-open-on="<?php echo esc_attr( $mobile_open ); ?>"
 			data-no-translation>
 
 			<?php if ( $is_dropdown ) : ?>

@@ -349,6 +349,10 @@ class LSDP_Language_Switcher_Block {
 				'type'    => 'array',
 				'default' => array(),
 			),
+			'openOn'                  => array(
+				'type'    => 'string',
+				'default' => 'hover',
+			),
 		);
 
 		foreach ( $switcher_options as $option => $data ) {
@@ -1214,12 +1218,13 @@ class LSDP_Language_Switcher_Block {
 		$wrapper_class      = trim( $unique_class . ' ' . $layout_class . ' ' . $custom_class );
 		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => $wrapper_class ) );
 		$aria_label         = __( 'Choose a language', 'language-switcher-for-divi-polylang' );
+		$open_on            = ( isset( $attributes['openOn'] ) && 'click' === $attributes['openOn'] ) ? 'click' : 'hover';
 
 		$spacing_css = $this->generate_spacing_css( $attributes, $unique_class );
 
 		$output  = $this->get_instance_style_tag( $spacing_css );
 		$output .= '<div ' . $wrapper_attributes . '>';
-		$output .= '<div class="lsdp-dropdown-container" id="' . esc_attr( $unique_id ) . '">';
+		$output .= '<div class="lsdp-dropdown-container" id="' . esc_attr( $unique_id ) . '" data-lsdp-open-on="' . esc_attr( $open_on ) . '">';
 		$output .= '<button type="button" class="lsdp-dropdown-button lsdp-lang-item" aria-haspopup="listbox" aria-expanded="false" aria-label="' . esc_attr( $aria_label ) . '">';
 
 		if ( $show_flags ) {

@@ -2,6 +2,7 @@
  * Elementor dropdown width — same idea as the block switcher:
  * measure the widest language row, set --lsep-switcher-width so the
  * absolute menu and trigger share one width without pushing page content.
+ * Also handles click-to-open when data-lsdp-open-on="click".
  */
 (function () {
 	'use strict';
@@ -59,9 +60,36 @@
 		}
 	}
 
+	function shouldOpenOnClick(wrapper) {
+		return (
+			wrapper.classList.contains('lsep-open-on-click') ||
+			wrapper.getAttribute('data-lsdp-open-on') === 'click'
+		);
+	}
+
+	function bindClickOpen(wrapper) {
+		if (!shouldOpenOnClick(wrapper) || wrapper.hasAttribute('data-lsdp-click-initialized')) {
+			return;
+		}
+
+		var trigger = wrapper.querySelector('.lsep-active-language');
+		if (!trigger) {
+			return;
+		}
+
+		wrapper.setAttribute('data-lsdp-click-initialized', 'true');
+
+		trigger.addEventListener('click', function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			wrapper.classList.toggle('active');
+		});
+	}
+
 	function initAll() {
 		document.querySelectorAll('.lsep-wrapper.dropdown').forEach(function (wrapper) {
 			setSwitcherWidth(wrapper);
+			bindClickOpen(wrapper);
 		});
 	}
 
@@ -72,6 +100,17 @@
 	} else {
 		initAll();
 	}
+
+	document.addEventListener('click', function (e) {
+		document.querySelectorAll('.lsep-wrapper.dropdown.active').forEach(function (wrapper) {
+			if (!shouldOpenOnClick(wrapper)) {
+				return;
+			}
+			if (!wrapper.contains(e.target)) {
+				wrapper.classList.remove('active');
+			}
+		});
+	});
 
 	// Elementor frontend / preview re-renders widgets without a full reload.
 	if (typeof jQuery !== 'undefined') {

@@ -46,6 +46,7 @@
           originalConfig: JSON.stringify(config),
           showColorPicker: null,
           showPresetConfirm: null,
+          previewDropdownOpen: false,
         };
 
         this.presets = this.getPresets();
@@ -75,6 +76,10 @@
             layout.languageNames === "none"
           ) {
             layout.languageNames = "full";
+          }
+
+          if (layout.openOn !== "hover" && layout.openOn !== "click") {
+            layout.openOn = device === "mobile" ? "click" : "hover";
           }
 
           layoutCustomizer[device] = layout;
@@ -115,6 +120,7 @@
               customPadding: 0,
               flagIconPosition: "before",
               languageNames: "full",
+              openOn: "hover",
             },
             mobile: {
               position: "bottom-right",
@@ -124,6 +130,7 @@
               customPadding: 0,
               flagIconPosition: "before",
               languageNames: "full",
+              openOn: "click",
             },
           },
         };
@@ -215,10 +222,18 @@
               [device]: nextLayout,
             },
           };
-          return {
+
+          const nextState = {
             config: newConfig,
             hasChanges: JSON.stringify(newConfig) !== prevState.originalConfig,
           };
+
+          // Reset preview open state when open behaviour changes.
+          if (Object.prototype.hasOwnProperty.call(updates, "openOn")) {
+            nextState.previewDropdownOpen = false;
+          }
+
+          return nextState;
         });
       }
 
@@ -551,7 +566,7 @@
   }
 
       renderSwitcherPreview() {
-        const { config, languages, currentDevice } = this.state;
+        const { config, languages, currentDevice, previewDropdownOpen } = this.state;
         const layoutConfig = config.layoutCustomizer[currentDevice];
 
         const styles = this.buildPreviewStyles();
@@ -562,6 +577,8 @@
 
         const isDropdown = config.type === "dropdown";
         const isSideBySide = config.type === "side-by-side";
+        const openOn = layoutConfig.openOn === "click" ? "click" : "hover";
+        const isPreviewOpen = isDropdown && openOn === "click" && previewDropdownOpen;
 
         let allLangs = languages.length > 0
           ? languages
@@ -576,13 +593,35 @@
         const current = sampleLangs[0];
         const others = sampleLangs.slice(1);
 
+        const previewClassName = [
+          "lsdp-language-switcher",
+          "lsdp-floating-switcher",
+          `lsdp-ls-${isDropdown ? "dropdown" : "inline"}`,
+          positionClass,
+          isDropdown ? `lsdp-preview-open-${openOn}` : "",
+          isPreviewOpen ? "lsdp-preview-is-open" : "",
+        ]
+          .filter(Boolean)
+          .join(" ");
+
         return h(
           "div",
           {
-            className: `lsdp-language-switcher lsdp-floating-switcher lsdp-ls-${
-              isDropdown ? "dropdown" : "inline"
-            } ${positionClass}`,
+            className: previewClassName,
             style: styles,
+            onClick:
+              isDropdown && openOn === "click"
+                ? (e) => {
+                    // Ignore clicks on other languages inside the open list.
+                    if (e.target.closest(".lsdp-switcher-dropdown-list")) {
+                      return;
+                    }
+                    e.preventDefault();
+                    this.setState((prev) => ({
+                      previewDropdownOpen: !prev.previewDropdownOpen,
+                    }));
+                  }
+                : undefined,
           },
           h(
             "div",
@@ -597,8 +636,7 @@
                     h(
                       "div",
                       {
-                        className:
-                          "lsdp-switcher-dropdown-list lsdp-preview-expanded",
+                        className: "lsdp-switcher-dropdown-list",
                       },
                       others.map((lang) =>
                         this.renderLanguageItem(lang, false, layoutConfig, isDropdown)
@@ -1194,7 +1232,11 @@
                       currentDevice === "desktop" ? "active" : ""
                     }`,
                     type: "button",
-                    onClick: () => this.setState({ currentDevice: "desktop" }),
+                    onClick: () =>
+                      this.setState({
+                        currentDevice: "desktop",
+                        previewDropdownOpen: false,
+                      }),
                   },
                   this.renderDesktopIcon(),
                   h("span", null, __("Desktop", "language-switcher-for-divi-polylang"))
@@ -1206,7 +1248,11 @@
                       currentDevice === "mobile" ? "active" : ""
                     }`,
                     type: "button",
-                    onClick: () => this.setState({ currentDevice: "mobile" }),
+                    onClick: () =>
+                      this.setState({
+                        currentDevice: "mobile",
+                        previewDropdownOpen: false,
+                      }),
                   },
                   this.renderMobileIcon(),
                   h("span", null, __("Mobile", "language-switcher-for-divi-polylang"))
@@ -1219,6 +1265,26 @@
                 h(
                   "div",
                   { className: "lsdp-lc-section" },
+                  config.type === "dropdown" &&
+                    h(
+                      "div",
+                      { className: "lsdp-lc-subfield" },
+                      this.renderLayoutRadioGroup(
+                        "openOn",
+                        [
+                          {
+                            value: "hover",
+                            label: __("Hover", "language-switcher-for-divi-polylang"),
+                          },
+                          {
+                            value: "click",
+                            label: __("Click", "language-switcher-for-divi-polylang"),
+                          },
+                        ],
+                        __("Open dropdown on", "language-switcher-for-divi-polylang")
+                      )
+                    ),
+
                   h(
                     "div",
                     { className: "lsdp-lc-subfield" },

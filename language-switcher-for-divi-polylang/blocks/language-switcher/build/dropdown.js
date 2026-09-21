@@ -226,6 +226,10 @@
             menu.style.display = 'block';
         }
 
+        function shouldOpenOnHover() {
+            return (container.getAttribute('data-lsdp-open-on') || 'hover') === 'hover';
+        }
+
         button.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -233,8 +237,16 @@
             isExpanded ? closeDropdown() : openDropdown();
         });
 
-        container.addEventListener('mouseenter', openDropdown);
-        container.addEventListener('mouseleave', closeDropdown);
+        container.addEventListener('mouseenter', function() {
+            if (shouldOpenOnHover()) {
+                openDropdown();
+            }
+        });
+        container.addEventListener('mouseleave', function() {
+            if (shouldOpenOnHover()) {
+                closeDropdown();
+            }
+        });
 
         button.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {

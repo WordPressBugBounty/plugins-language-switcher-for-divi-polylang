@@ -3,7 +3,7 @@
 Plugin Name: Language Switcher for Polylang – Elementor, Gutenberg, & Divi
 Plugin URI:  https://wordpress.org/plugins/language-switcher-for-divi-polylang
 Description: Language Switcher for Polylang – Elementor, Gutenberg, & Divi to use added language switcher in your page or divi header menu
-Version:     1.1.1
+Version:     1.1.2
 Requires at least: 5.0
 Requires PHP: 7.2
 Author:      Coolplugins
@@ -32,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LSDP', '1.1.1' );
+define( 'LSDP', '1.1.2' );
 define( 'LSDP_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LSDP_URL', plugin_dir_url( __FILE__ ) );
 define( 'LSDP_MODULE_URL', LSDP_URL . 'includes/modules' );

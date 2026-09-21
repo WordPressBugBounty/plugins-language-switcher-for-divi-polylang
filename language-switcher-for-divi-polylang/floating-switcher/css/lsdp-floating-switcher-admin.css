@@ -222,8 +222,9 @@
     flex-direction: column !important;
 }
 
-/* SHOW dropdown on hover */
-.lsdp-language-switcher-preview-box .lsdp-floating-switcher:hover .lsdp-switcher-dropdown-list {
+/* SHOW dropdown on hover (only when Open dropdown on = Hover) */
+.lsdp-language-switcher-preview-box .lsdp-floating-switcher.lsdp-preview-open-hover:hover .lsdp-switcher-dropdown-list,
+.lsdp-language-switcher-preview-box .lsdp-floating-switcher.lsdp-preview-is-open .lsdp-switcher-dropdown-list {
     max-height: 500px;
     overflow: visible;
 }
@@ -313,6 +314,12 @@
     pointer-events: none;
 }
 
+/* Click-open preview: allow hitting the current language control */
+.lsdp-language-switcher-preview-box .lsdp-floating-switcher.lsdp-preview-open-click .lsdp-language-item__default {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
 .lsdp-flag-image {
     width: var(--flag-size, 18px);
     height: auto;
@@ -355,8 +362,9 @@
     display: none !important;
 }
 
-/* Rotate arrow when hovering preview */
-.lsdp-language-switcher-preview-box .lsdp-floating-switcher:hover .lsdp-dropdown-arrow {
+/* Rotate arrow when preview dropdown is open */
+.lsdp-language-switcher-preview-box .lsdp-floating-switcher.lsdp-preview-open-hover:hover .lsdp-dropdown-arrow,
+.lsdp-language-switcher-preview-box .lsdp-floating-switcher.lsdp-preview-is-open .lsdp-dropdown-arrow {
     transform: rotate(180deg) !important;
 }
 

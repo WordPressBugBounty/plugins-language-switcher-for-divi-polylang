@@ -159,11 +159,13 @@
   white-space: nowrap;
 }
 
-.lsdp-wrapper.dropdown.active::after, .lsdp-wrapper.dropdown:hover::after {
+.lsdp-wrapper.dropdown.active::after,
+.lsdp-wrapper.dropdown:not(.lsdp-open-on-click):hover::after {
   border-width: 0 6px 6px 6px;
 }
 
-.lsdp-wrapper.dropdown.active ul, .lsdp-wrapper.dropdown:hover ul {
+.lsdp-wrapper.dropdown.active ul,
+.lsdp-wrapper.dropdown:not(.lsdp-open-on-click):hover ul {
   opacity: 1;
   pointer-events: auto;
 }

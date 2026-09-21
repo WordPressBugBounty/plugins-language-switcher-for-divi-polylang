@@ -72,6 +72,16 @@
         }
       }
     },
+    "open_dropdown_on_click": {
+      "type": "object",
+      "default": {
+        "innerContent": {
+          "desktop": {
+            "value": "off"
+          }
+        }
+      }
+    },
     "flag_style": {
       "type": "object",
       "default": {

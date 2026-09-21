@@ -21,6 +21,7 @@ trait RenderCallbackTrait {
       'show_language_code' => ModuleHelper::get_attr_value($attrs, 'show_language_code', 'off'),
       'hide_current_language' => ModuleHelper::get_attr_value($attrs, 'hide_current_language', 'off'),
       'hide_untranslated_language' => ModuleHelper::get_attr_value($attrs, 'hide_untranslated_language', 'off'),
+      'open_dropdown_on_click' => ModuleHelper::get_attr_value($attrs, 'open_dropdown_on_click', 'off'),
     );
     
     $layout = sanitize_html_class( (string) $props['switcher_layouts'] );
@@ -28,12 +29,16 @@ trait RenderCallbackTrait {
       $layout = 'dropdown';
     }
 
+    $open_on_click = ( 'dropdown' === $layout && 'on' === $props['open_dropdown_on_click'] );
+    $wrapper_class = 'lsdp-wrapper ' . $layout . ( $open_on_click ? ' lsdp-open-on-click' : '' );
+
     $module_inner_container = HTMLUtility::render(
       [
         'tag'               => 'div',
         'attributes'        => [
-          'class' => 'lsdp-wrapper ' . $layout,
+          'class' => $wrapper_class,
           'id' => 'lsdp-wrapper',
+          'data-lsdp-open-on' => $open_on_click ? 'click' : 'hover',
         ],
         'childrenSanitizer' => 'et_core_esc_previously',
         'children'          => LanguageSwitcherModule::render_content($props),
