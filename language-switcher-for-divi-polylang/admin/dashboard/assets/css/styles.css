@@ -19,27 +19,64 @@
     padding: 0;
 }
 
-/* Header Section */
+/* Header Section — matches AutoPoly's dashboard header (admin-styles.css
+   .atfp-dashboard-header) so every tool's header reads as the same
+   Toolkit chrome. */
 .lsdp-dashboard-header {
-    background: #fff;
-    border-bottom: 1px solid #dcdcde;
-    padding: 12px 30px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    padding: 5px 30px;
+    height: 70px;
+    box-sizing: border-box;
+}
+
+/* When toolkit nav is present, height is owned by toolkit-hub.css */
+.lsdp-dashboard-header:has(.tfp-nav) {
+    height: auto;
+    min-height: 70px;
+    overflow: visible;
 }
 
 .lsdp-header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 100%;
+    gap: 12px;
+}
+
+.lsdp-header-content:has(.tfp-nav) {
+    height: auto;
+    min-height: 60px;
 }
 
 .lsdp-header-logo {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-shrink: 1; /* was 0 — crushed the nav track and forced Language Switcher wrap */
+    min-width: 0;
 }
+
+.lsdp-header-logo-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.lsdp-header-logo-link:focus,
+.lsdp-header-logo-link:hover {
+    box-shadow: none;
+    outline: none;
+}
+
 .lsdp-header-logo img {
-    max-height: 50px;
-    width: auto;
+    width: 42px;
+    max-width: 42px;
+    max-height: 42px;
+    margin: 0;
     display: block;
 }
 
@@ -49,78 +86,25 @@
     font-size: 18px !important;
     font-weight: 700 !important;
     color: #000;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif !important;
-    letter-spacing: -0.5px !important;
     line-height: 1.2 !important;
+    white-space: normal;
+    overflow: visible;
 }
 
 .lsdp-header-actions {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     align-items: center;
+    flex-shrink: 1; /* allow nav track to keep 3 items on one row */
+    min-width: 0;
 }
 
-.lsdp-header-actions .button.lsdp-header-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    height: auto;
-    min-height: 40px;
-    line-height: 1;
-    padding: 10px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #0b67f0;
-    border-color: #0b67f0;
-    border-radius: 6px;
-    background: #fff;
+/* Header actions use shared .tfp-header-btn styles from toolkit-hub.css (same as AutoPoly / Duplicate). */
+.lsdp-header-actions .tfp-header-btn {
     white-space: nowrap;
 }
 
-.lsdp-header-actions .button.lsdp-header-btn:hover,
-.lsdp-header-actions .button.lsdp-header-btn:focus {
-    color: #0758cc;
-    border-color: #0758cc;
-    background: #f3f7ff;
-}
 
-.lsdp-header-actions .lsdp-header-btn .dashicons,
-.lsdp-dashboard-wrap .lsdp-header-actions .button.lsdp-header-btn .dashicons {
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    font-size: 20px;
-    line-height: 20px;
-    margin: 0 !important;
-    padding: 0;
-    vertical-align: middle;
-    flex-shrink: 0;
-    position: relative;
-    top: 0;
-}
-
-/*
- * Same rule Elementor ships in assets/css/admin.css.
- * Without Elementor active it never loads, so WP 7.x leaves button dashicons grey/misaligned.
- */
-[class*=branch-7].wp-core-ui .button .dashicons {
-    vertical-align: middle;
-    line-height: 1.2;
-    color: var(--wp-admin-theme-color);
-}
-
-.lsdp-header-actions .lsdp-header-btn-label {
-    display: inline-block;
-    line-height: 1.2;
-}
-
-.lsdp-header-btn-question-icon {
-    width: 26px !important;
-    font-size: 26px !important;
-}
 
 /* Nav tabs stay full-width for the underline; inset matches the centered content column */
 .lsdp-dashboard-wrap h2.nav-tab-wrapper {
@@ -209,7 +193,7 @@
     }
 }
 
-/* Tab Content Wrapper - same width/centering as nav tabs */
+
 .lsdp-tab-content-wrapper {
     width: 100%;
     max-width: var(--lsdp-dash-content-max);
@@ -233,7 +217,7 @@
         --lsdp-dash-inline: 14px;
     }
 
-    .lsdp-dashboard-header {
+    .lsdp-dashboard-header:not(:has(.tfp-nav)) {
         padding: 15px 20px;
     }
 
@@ -278,12 +262,20 @@
 }
 
 .lsdp-gs-box {
-    padding: 0px 26px 26px 26px;
+    padding: 26px;
     margin-bottom: 24px;
     background: #fff;
     border: 1px solid var(--lsdp-gs-border);
     border-radius: var(--lsdp-gs-radius-lg);
     box-shadow: var(--lsdp-gs-shadow);
+}
+
+/* Vertically center G/E builder card row in the white picker box (was top-stuck from uneven padding). */
+.lsdp-gs-box:has(.lsdp-gs-builder-cards) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
 }
 
 .lsdp-gs-choose-heading {

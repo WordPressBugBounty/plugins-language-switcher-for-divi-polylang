@@ -67,7 +67,7 @@
 			.then(function (data) {
 				if (data.success) {
 					var settingsLink = document.createElement('a');
-					settingsLink.href = config.settingsUrl || 'admin.php?page=polylang-atfp-dashboard';
+					settingsLink.href = (data.data && data.data.settingsUrl) || config.settingsUrl || 'admin.php?page=polylang-atfp-dashboard';
 					settingsLink.className = 'button button-primary lsdp-promo-button';
 					settingsLink.target = '_blank';
 					settingsLink.rel = 'noopener noreferrer';

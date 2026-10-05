@@ -66,6 +66,7 @@ class LSDP_Floating_Switcher_Settings {
 
 		// Register AJAX handler for AutoPoly install/activate
 		add_action( 'wp_ajax_lsdp_install_autopoly', array( $this, 'ajax_install_autopoly' ) );
+		add_action( 'wp_ajax_lsdp_install_inspector', array( $this, 'ajax_install_inspector' ) );
 	}
 
 	/**
@@ -120,6 +121,8 @@ class LSDP_Floating_Switcher_Settings {
 
 		require_once LSDP_DIR . 'admin/dashboard/includes/autopoly-promo.php';
 		lsdp_enqueue_autopoly_promo_script();
+		require_once LSDP_DIR . 'admin/dashboard/includes/inspector-promo.php';
+		lsdp_enqueue_inspector_promo_script();
 
 		// Enqueue React app JavaScript
 		wp_enqueue_script(
@@ -349,6 +352,55 @@ class LSDP_Floating_Switcher_Settings {
 			);
 		}
 
+		if ( ! current_user_can( 'install_plugins' ) && ! current_user_can( 'activate_plugins' ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Sorry, you are not allowed to install plugins on this site.', 'language-switcher-for-divi-polylang' ),
+				)
+			);
+		}
+
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+		// Free or Pro already active — nothing to install/activate.
+		if ( class_exists( 'LSDP_Common_Helpers' ) ) {
+			$status = LSDP_Common_Helpers::get_autopoly_status();
+			if ( ! empty( $status['active'] ) ) {
+				wp_send_json_success(
+					array(
+						'message'     => __( 'AutoPoly is already active.', 'language-switcher-for-divi-polylang' ),
+						'settingsUrl' => LSDP_Common_Helpers::get_autopoly_settings_url(),
+					)
+				);
+			}
+
+			// Prefer activating Pro when it is installed but inactive.
+			$pro_file = LSDP_Common_Helpers::get_autopoly_pro_plugin_file();
+			if ( file_exists( WP_PLUGIN_DIR . '/' . $pro_file ) && ! is_plugin_active( $pro_file ) ) {
+				if ( ! current_user_can( 'activate_plugin', $pro_file ) ) {
+					wp_send_json_error(
+						array(
+							'message' => __( 'Sorry, you are not allowed to activate plugins on this site.', 'language-switcher-for-divi-polylang' ),
+						)
+					);
+				}
+				$activation_result = activate_plugin( $pro_file, '', false, true );
+				if ( is_wp_error( $activation_result ) ) {
+					wp_send_json_error(
+						array(
+							'message' => $activation_result->get_error_message(),
+						)
+					);
+				}
+				wp_send_json_success(
+					array(
+						'message'     => __( 'AutoPoly Pro activated successfully!', 'language-switcher-for-divi-polylang' ),
+						'settingsUrl' => LSDP_Common_Helpers::get_autopoly_settings_url(),
+					)
+				);
+			}
+		}
+
 		if ( ! current_user_can( 'install_plugins' ) ) {
 			wp_send_json_error(
 				array(
@@ -399,7 +451,7 @@ class LSDP_Floating_Switcher_Settings {
 			$install_status = install_plugin_install_status( $api );
 		}
 
-		if ( current_user_can( 'activate_plugin', $install_status['file'] ) && is_plugin_inactive( $install_status['file'] ) ) {
+		if ( current_user_can( 'activate_plugin', $install_status['file'] ) && ! is_plugin_active( $install_status['file'] ) ) {
 			$activation_result = activate_plugin( $install_status['file'], '', false, true );
 
 			if ( is_wp_error( $activation_result ) ) {
@@ -432,6 +484,140 @@ class LSDP_Floating_Switcher_Settings {
 	 * @param array $config Raw configuration array from client
 	 * @return array Sanitized and validated configuration array
 	 */
+
+	/**
+	 * AJAX: Install and activate Translation Inspector (Duplicate Content).
+	 *
+	 * @since 1.2.5
+	 */
+	public function ajax_install_inspector() {
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+		if ( ! wp_verify_nonce( $nonce, 'lsdp_install_inspector' ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Invalid security token.', 'language-switcher-for-divi-polylang' ),
+				)
+			);
+		}
+
+		if ( ! current_user_can( 'install_plugins' ) && ! current_user_can( 'activate_plugins' ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Sorry, you are not allowed to install plugins on this site.', 'language-switcher-for-divi-polylang' ),
+				)
+			);
+		}
+
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+		$plugin_file = class_exists( 'LSDP_Common_Helpers' )
+			? LSDP_Common_Helpers::get_inspector_plugin_file()
+			: 'duplicate-content-addon-for-polylang/duplicate-content-addon-for-polylang.php';
+		$settings_url = admin_url( 'admin.php?page=translation-inspector-polylang' );
+
+		if ( class_exists( 'LSDP_Common_Helpers' ) ) {
+			$status = LSDP_Common_Helpers::get_inspector_status();
+			if ( ! empty( $status['active'] ) ) {
+				wp_send_json_success(
+					array(
+						'message'     => __( 'Translation Inspector is already active.', 'language-switcher-for-divi-polylang' ),
+						'settingsUrl' => $settings_url,
+					)
+				);
+			}
+			if ( ! empty( $status['installed'] ) && ! is_plugin_active( $plugin_file ) ) {
+				if ( ! current_user_can( 'activate_plugin', $plugin_file ) ) {
+					wp_send_json_error(
+						array(
+							'message' => __( 'Sorry, you are not allowed to activate plugins on this site.', 'language-switcher-for-divi-polylang' ),
+						)
+					);
+				}
+				$activation_result = activate_plugin( $plugin_file, '', false, true );
+				if ( is_wp_error( $activation_result ) ) {
+					wp_send_json_error(
+						array(
+							'message' => $activation_result->get_error_message(),
+						)
+					);
+				}
+				wp_send_json_success(
+					array(
+						'message'     => __( 'Translation Inspector activated successfully!', 'language-switcher-for-divi-polylang' ),
+						'settingsUrl' => $settings_url,
+					)
+				);
+			}
+		}
+
+		if ( ! current_user_can( 'install_plugins' ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Sorry, you are not allowed to install plugins on this site.', 'language-switcher-for-divi-polylang' ),
+				)
+			);
+		}
+
+		$plugin_slug = 'duplicate-content-addon-for-polylang';
+
+		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+
+		$api = plugins_api(
+			'plugin_information',
+			array(
+				'slug'   => $plugin_slug,
+				'fields' => array( 'sections' => false ),
+			)
+		);
+
+		if ( is_wp_error( $api ) ) {
+			wp_send_json_error(
+				array(
+					'message' => $api->get_error_message(),
+				)
+			);
+		}
+
+		$install_status = install_plugin_install_status( $api );
+
+		if ( 'install' === $install_status['status'] ) {
+			ob_start();
+			$skin     = new WP_Ajax_Upgrader_Skin();
+			$upgrader = new Plugin_Upgrader( $skin );
+			$result   = $upgrader->install( $api->download_link );
+			ob_end_clean();
+
+			if ( is_wp_error( $result ) ) {
+				wp_send_json_error(
+					array(
+						'message' => $result->get_error_message(),
+					)
+				);
+			}
+
+			$install_status = install_plugin_install_status( $api );
+		}
+
+		if ( ! empty( $install_status['file'] ) && current_user_can( 'activate_plugin', $install_status['file'] ) && ! is_plugin_active( $install_status['file'] ) ) {
+			$activation_result = activate_plugin( $install_status['file'], '', false, true );
+			if ( is_wp_error( $activation_result ) ) {
+				wp_send_json_error(
+					array(
+						'message' => $activation_result->get_error_message(),
+					)
+				);
+			}
+		}
+
+		wp_send_json_success(
+			array(
+				'message'     => __( 'Translation Inspector installed and activated successfully!', 'language-switcher-for-divi-polylang' ),
+				'settingsUrl' => $settings_url,
+			)
+		);
+	}
+
 	private function sanitize_config( $config ) {
 		$sanitized = array();
 

@@ -422,7 +422,7 @@ class LSDP_Common_Helpers {
 	}
 
 	/**
-	 * Get AutoPoly plugin file path.
+	 * Get AutoPoly Free plugin file path.
 	 *
 	 * @since 1.2.4
 	 * @return string Plugin file path.
@@ -432,20 +432,92 @@ class LSDP_Common_Helpers {
 	}
 
 	/**
-	 * Check AutoPoly plugin status.
+	 * Get AutoPoly Pro plugin file path.
+	 *
+	 * @since 1.2.5
+	 * @return string Plugin file path.
+	 */
+	public static function get_autopoly_pro_plugin_file() {
+		return 'autopoly-ai-translation-for-polylang-pro/autopoly-ai-translation-for-polylang-pro.php';
+	}
+
+	/**
+	 * Check AutoPoly plugin status (Free or Pro counts as installed/active).
 	 *
 	 * @since 1.2.4
-	 * @return array Status with 'installed' and 'active' booleans.
+	 * @return array Status with 'installed', 'active', and 'edition' (free|pro|'').
 	 */
 	public static function get_autopoly_status() {
 		self::ensure_plugin_api_loaded();
 
-		$plugin_file = self::get_autopoly_plugin_file();
+		$free_file  = self::get_autopoly_plugin_file();
+		$pro_file   = self::get_autopoly_pro_plugin_file();
 		$all_plugins = get_plugins();
 
+		$pro_active  = self::lsdp_is_plugin_active( $pro_file ) || defined( 'ATFPP_V' ) || defined( 'ATFPP_FILE' );
+		$free_active = self::lsdp_is_plugin_active( $free_file ) || defined( 'ATFP_V' ) || defined( 'ATFP_FILE' );
+		$installed   = isset( $all_plugins[ $free_file ] ) || isset( $all_plugins[ $pro_file ] ) || $pro_active || $free_active;
+
+		$edition = '';
+		if ( $pro_active ) {
+			$edition = 'pro';
+		} elseif ( $free_active ) {
+			$edition = 'free';
+		} elseif ( isset( $all_plugins[ $pro_file ] ) ) {
+			$edition = 'pro';
+		} elseif ( isset( $all_plugins[ $free_file ] ) ) {
+			$edition = 'free';
+		}
+
 		return array(
-			'installed' => isset( $all_plugins[ $plugin_file ] ),
-			'active'    => self::lsdp_is_plugin_active( $plugin_file ),
+			'installed' => $installed,
+			'active'    => $pro_active || $free_active,
+			'edition'   => $edition,
+		);
+	}
+
+	/**
+	 * Dashboard URL for the active AutoPoly edition.
+	 *
+	 * @since 1.2.5
+	 * @return string
+	 */
+	public static function get_autopoly_settings_url() {
+		$status = self::get_autopoly_status();
+		if ( 'pro' === ( $status['edition'] ?? '' ) ) {
+			return admin_url( 'admin.php?page=polylang-atfpp-dashboard' );
+		}
+		return admin_url( 'admin.php?page=polylang-atfp-dashboard' );
+	}
+
+	/**
+	 * Translation Inspector plugin file path.
+	 *
+	 * @since 1.2.5
+	 * @return string
+	 */
+	public static function get_inspector_plugin_file() {
+		return 'duplicate-content-addon-for-polylang/duplicate-content-addon-for-polylang.php';
+	}
+
+	/**
+	 * Check Translation Inspector install/active status.
+	 *
+	 * @since 1.2.5
+	 * @return array{installed:bool,active:bool}
+	 */
+	public static function get_inspector_status() {
+		self::ensure_plugin_api_loaded();
+
+		$plugin_file = self::get_inspector_plugin_file();
+		$all_plugins = get_plugins();
+		$active      = self::lsdp_is_plugin_active( $plugin_file )
+			|| defined( 'DUPCAP_FILE' )
+			|| defined( 'DUPCAP_VERSION' );
+
+		return array(
+			'installed' => isset( $all_plugins[ $plugin_file ] ) || $active,
+			'active'    => $active,
 		);
 	}
 }

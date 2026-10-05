@@ -128,24 +128,7 @@ $builder_order = array_unique( array( $default_builder, 'divi', 'elementor', 'gu
 
 	<footer class="lsdp-gs-footer">
 
-		<div class="lsdp-gs-footer-card">
-			<div class="lsdp-gs-footer-icon" aria-hidden="true">
-				<span class="dashicons dashicons-editor-help"></span>
-			</div>
-			<h3><?php esc_html_e( 'Support', 'language-switcher-for-divi-polylang' ); ?></h3>
-			<p><?php esc_html_e( 'Need help? Our team can assist with setup and troubleshooting.', 'language-switcher-for-divi-polylang' ); ?></p>
-			<div class="lsdp-gs-footer-links">
-				<a
-					class="lsdp-gs-footer-btn"
-					href="<?php echo esc_url( 'https://wordpress.org/support/plugin/language-switcher-for-divi-polylang/#new-topic-0' ); ?>"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<?php esc_html_e( 'Get Support', 'language-switcher-for-divi-polylang' ); ?>
-					<span class="dashicons dashicons-arrow-right-alt2" aria-hidden="true"></span>
-				</a>
-			</div>
-		</div>
+		<?php lsdp_render_inspector_promo( 'get_started' ); ?>
 
 		<?php lsdp_render_autopoly_promo( 'get_started' ); ?>
 

@@ -3,7 +3,7 @@
 Plugin Name: Language Switcher for Polylang – Elementor, Gutenberg, & Divi
 Plugin URI:  https://wordpress.org/plugins/language-switcher-for-divi-polylang
 Description: Language Switcher for Polylang – Elementor, Gutenberg, & Divi to use added language switcher in your page or divi header menu
-Version:     1.1.2
+Version:     1.1.3
 Requires at least: 5.0
 Requires PHP: 7.2
 Author:      Coolplugins
@@ -32,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LSDP', '1.1.2' );
+define( 'LSDP', '1.1.3' );
 define( 'LSDP_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LSDP_URL', plugin_dir_url( __FILE__ ) );
 define( 'LSDP_MODULE_URL', LSDP_URL . 'includes/modules' );
@@ -105,9 +105,34 @@ final class LANGUAGE_SWITCHER_FOR_DIVI_POLYLANG {
 			require_once LSDP_DIR . 'admin/feedback/class-lsdp-feedback.php';
 			require_once LSDP_DIR . 'admin/dashboard/class-lsdp-admin-dashboard.php';
 			lsdp_register_admin_dashboard();
+			$this->init_toolkit_hub();
 		} else {
 			require_once LSDP_DIR . 'floating-switcher/class-lsdp-floating-switcher-frontend.php';
 		}
+	}
+
+	/**
+	 * Load the shared "Toolkit for Polylang" hub.
+	 *
+	 * This file ships identically in this plugin, AutoPoly, and Translation
+	 * Inspector. The class_exists() guard means only the copy that loads
+	 * first actually runs — whichever of the three plugins happens to boot
+	 * first on a given site — so having more than one of these plugins
+	 * active never registers the hub twice.
+	 *
+	 * @return void
+	 */
+	public function init_toolkit_hub() {
+		require_once LSDP_DIR . 'admin/toolkit-hub/load-tfp-toolkit-hub.php';
+		tfp_toolkit_hub_register(
+			'1.0.2',
+			LSDP_DIR . 'admin/toolkit-hub/class-tfp-toolkit-hub.php',
+			array(
+				'text_domain' => 'language-switcher-for-divi-polylang',
+				'support_url' => 'https://wordpress.org/support/plugin/language-switcher-for-divi-polylang/#new-topic-0',
+				'docs_url'    => 'https://docs.coolplugins.net/doc/language-switcher-for-elementor-polylang/?utm_source=lsdp_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard_header',
+			)
+		);
 	}
 
 	public function initialize_theme_builder_conditions() {
@@ -426,3 +451,22 @@ final class LANGUAGE_SWITCHER_FOR_DIVI_POLYLANG {
 
 register_activation_hook( __FILE__, array( 'LANGUAGE_SWITCHER_FOR_DIVI_POLYLANG', 'activate' ) );
 LANGUAGE_SWITCHER_FOR_DIVI_POLYLANG::get_instance();
+
+// Register Toolkit Hub as early as file load so a newer copy boots before
+// older siblings that still require the class on plugins_loaded 10/20.
+if ( is_admin() && defined( 'LSDP_DIR' ) ) {
+	$tfp_hub_load = LSDP_DIR . 'admin/toolkit-hub/load-tfp-toolkit-hub.php';
+	if ( file_exists( $tfp_hub_load ) ) {
+		require_once $tfp_hub_load;
+		tfp_toolkit_hub_register(
+			'1.0.2',
+			LSDP_DIR . 'admin/toolkit-hub/class-tfp-toolkit-hub.php',
+			array(
+				'text_domain' => 'language-switcher-for-divi-polylang',
+				'support_url' => 'https://wordpress.org/support/plugin/language-switcher-for-divi-polylang/#new-topic-0',
+				'docs_url'    => 'https://docs.coolplugins.net/doc/language-switcher-for-elementor-polylang/?utm_source=lsdp_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard_header',
+			)
+		);
+	}
+}
+

@@ -25,7 +25,7 @@ function lsdp_get_autopoly_promo_html( $context = 'get_started' ) {
 	$is_installed = ! empty( $status['installed'] );
 	$image_url    = LSDP_URL . 'admin/dashboard/assets/images/autopoly-ai-translation-for-polylang-pro.png';
 	$docs_url     = 'https://docs.coolplugins.net/plugin/ai-translation-for-polylang/?utm_source=lsdp_plugin&utm_medium=inside&utm_campaign=docs&utm_content=' . rawurlencode( $context );
-	$settings_url = admin_url( 'admin.php?page=polylang-atfp-dashboard' );
+	$settings_url = class_exists( 'LSDP_Common_Helpers' ) ? LSDP_Common_Helpers::get_autopoly_settings_url() : admin_url( 'admin.php?page=polylang-atfp-dashboard' );
 
 	if ( $is_active ) {
 		$button_text = __( 'Go to Settings', 'language-switcher-for-divi-polylang' );
@@ -108,7 +108,7 @@ function lsdp_get_autopoly_promo_script_data() {
 	return array(
 		'ajaxUrl'      => admin_url( 'admin-ajax.php' ),
 		'installNonce' => wp_create_nonce( 'lsdp_install_autopoly' ),
-		'settingsUrl'  => admin_url( 'admin.php?page=polylang-atfp-dashboard' ),
+		'settingsUrl'  => class_exists( 'LSDP_Common_Helpers' ) ? LSDP_Common_Helpers::get_autopoly_settings_url() : admin_url( 'admin.php?page=polylang-atfp-dashboard' ),
 		'i18n'         => array(
 			'installing'   => __( 'Installing...', 'language-switcher-for-divi-polylang' ),
 			'activating'   => __( 'Activating...', 'language-switcher-for-divi-polylang' ),
