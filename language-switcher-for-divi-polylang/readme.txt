@@ -4,7 +4,7 @@ Tags: polylang,language switcher,multilingual,elementor,divi
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Add a customizable language switcher to Elementor, Gutenberg, and Divi websites, including a floating language switcher for Polylang.
@@ -79,7 +79,8 @@ This addon connects with sources like **Google**, **Yandex**, **DeepL**, or AI-p
 * **[AutoTP - AI Translation for TranslatePress](https://translatexyz.com/plugin/autotp-translatepress-ai-translation/?utm_source=lspd_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=tpa_advanced_plugins)**: Instantly translate your TranslatePress website using **OpenAI**, **Gemini AI**, **Chrome Built-in AI**, and other AI providers. Save time by translating pages, posts, products, and custom content automatically. 
 * **[AutoMLP - AI Translation for WPML](https://translatexyz.com/plugin/automlp-wpml-ai-translation/?utm_source=lspd_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=automlp_advanced_plugins)**: Translate your WPML website with your preferred AI provider **(at low cost)** instead of relying on expensive translation credits. 
 Supports **OpenAI**, **Gemini AI**, **Chrome Built-in AI**, and more for fast, accurate, and cost-effective translations. 
-* **[Linguator](https://linguator.com/?utm_source=lspd_plugin&utm_medium=readme&utm_campaign=product_site&utm_content=lmat_advanced_plugins)**: Build all-in-one multilingual WordPress websites with **AI-powered translations**, **automatic language detection**, **RTL support**, **media translation**, and seamless integration with **popular page builders**. 
+* **[Linguator](https://linguator.com/?utm_source=lspd_plugin&utm_medium=readme&utm_campaign=product_site&utm_content=lmat_advanced_plugins)**: Build all-in-one multilingual WordPress websites with **AI-powered translations**, **automatic language detection**, **RTL support**, **media translation**, and seamless integration with **popular page builders**.
+* **[Toolkit for Polylang – Translation Inspector & Duplicate Content](https://wordpress.org/plugins/duplicate-content-addon-for-polylang/)**: Scan and manage your Polylang website for missing translations, out-dated content, URLs & routing, site setup, Elementor translation, and more issues.
 * **[TranslateXYZ](https://translatexyz.com/plugin/locoai-loco-translate-ai-translation/?utm_source=lspd_plugin&utm_medium=readme&utm_campaign=product_site&utm_content=atlt_advanced_plugins)**: A complete AI translation platform for WordPress, offering powerful multilingual solutions for **Polylang**, **WPML**, **TranslatePress**, **Loco Translate**, and other popular translation plugins using powerful AI Translation models. 
 == Screenshots == 
 1. Language Switcher For  Frontend Preview.
@@ -154,6 +155,9 @@ Yes. You don't need to recreate your templates. The plugin can connect your exis
 = Where do I report security bugs found in this plugin? =
 Please report security bugs found in the source code of the Language Switcher for Polylang plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/0da29e56-bc01-46c8-a6f4-363ea6c69652). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 == Changelog ==
+
+= Version 1.1.4 | 27 October 2026 =
+- **Tested Up to**: Polylang 3.9.1.
 
 = Version 1.1.3 | 05 October 2026 =
 - **Added:** Introduced a unified Toolkit for Polylang dashboard to manage Polylang addons.
