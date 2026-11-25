@@ -855,7 +855,7 @@ class LSDP_Widget extends Widget_Base {
 
 			$flag_icon       = \LSDP_Common_Helpers::get_country_flag( $lang['flag'], $lang['name'] );
 			$languages_html .= '<li class="lsep-lang-item">';
-			$languages_html .= '<a href="' . esc_url( (string) ( $lang['url'] ?? '' ) ) . '">';
+			$languages_html .= '<a href="' . \LSDP_Common_Helpers::esc_language_url( (string) ( $lang['url'] ?? '' ) ) . '">';
 			if ( ! empty( $settings['lsep_language_switcher_show_flags'] ) && 'yes' === $settings['lsep_language_switcher_show_flags'] ) {
 				$languages_html .= '<div class="lsep-lang-image">' . wp_kses_post( $flag_icon ) . '</div>';
 			}
@@ -880,7 +880,7 @@ class LSDP_Widget extends Widget_Base {
 	 */
 	public static function lsep_get_active_language_html( $language, $settings ) {
 		$html      = '<span class="lsep-active-language">';
-		$html     .= '<a href="' . esc_url( (string) ( $language['url'] ?? '' ) ) . '">';
+		$html     .= '<a href="' . \LSDP_Common_Helpers::esc_language_url( (string) ( $language['url'] ?? '' ) ) . '">';
 		$flag_icon = \LSDP_Common_Helpers::get_country_flag( $language['flag'], $language['name'] );
 		if ( ! empty( $settings['lsep_language_switcher_show_flags'] ) && 'yes' === $settings['lsep_language_switcher_show_flags'] ) {
 			$html .= '<div class="lsep-lang-image">' . wp_kses_post( $flag_icon ) . '</div>';
@@ -916,7 +916,7 @@ class LSDP_Widget extends Widget_Base {
 			}
 
 			$flag_icon    = \LSDP_Common_Helpers::get_country_flag( $lang['flag'], $lang['name'] );
-			$anchor_open  = '<a href="' . esc_url( (string) ( $lang['url'] ?? '' ) ) . '">';
+			$anchor_open  = '<a href="' . \LSDP_Common_Helpers::esc_language_url( (string) ( $lang['url'] ?? '' ) ) . '">';
 			$anchor_close = '</a>';
 
 			$html .= '<li class="lsep-lang-item">';

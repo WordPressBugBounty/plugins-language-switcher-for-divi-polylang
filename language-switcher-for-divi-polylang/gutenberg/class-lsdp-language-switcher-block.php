@@ -1076,7 +1076,7 @@ class LSDP_Language_Switcher_Block {
 			$switcher_output .= '<li class="lsdp-lang-item' . ( $is_current ? ' current-lang' : '' ) . '">';
 
 			$link_attrs = array(
-				'href' => esc_url( $lang['url'] ),
+				'href' => LSDP_Common_Helpers::esc_language_url( $lang['url'] ),
 			);
 
 			if ( $is_current ) {
@@ -1255,7 +1255,7 @@ class LSDP_Language_Switcher_Block {
 			$classes = array( 'lsdp-dropdown-item' );
 
 			$output .= '<li role="option" class="' . esc_attr( implode( ' ', $classes ) ) . '">';
-			$output .= '<a href="' . esc_url( $lang['url'] ) . '">';
+			$output .= '<a href="' . LSDP_Common_Helpers::esc_language_url( $lang['url'] ) . '">';
 
 			if ( $show_flags ) {
 				$custom_flag = LSDP_Common_Helpers::get_country_flag( $lang['flag'], $lang['name'] );

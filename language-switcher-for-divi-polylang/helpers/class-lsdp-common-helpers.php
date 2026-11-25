@@ -400,6 +400,23 @@ class LSDP_Common_Helpers {
 	}
 
 	/**
+	 * Escape a language URL for output inside post content.
+	 *
+	 * Language URLs can carry the visitor's own query string. esc_url() keeps
+	 * "[" and "]" when the query holds a second copy of the site origin, and
+	 * do_shortcode() (the_content, priority 11) then runs any shortcode found
+	 * in the printed link. Percent-encoding the brackets stops that match.
+	 *
+	 * @since 1.1.5
+	 *
+	 * @param string $url Language URL.
+	 * @return string Escaped URL safe to print in an href attribute.
+	 */
+	public static function esc_language_url( $url ) {
+		return str_replace( array( '[', ']' ), array( '%5B', '%5D' ), esc_url( (string) $url ) );
+	}
+
+	/**
 	 * Get language name based on display mode.
 	 * Consolidated method to format language names consistently.
 	 *

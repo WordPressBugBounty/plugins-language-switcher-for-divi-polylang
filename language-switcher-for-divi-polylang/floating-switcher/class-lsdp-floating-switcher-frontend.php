@@ -409,7 +409,7 @@ class LSDP_Floating_Switcher_Frontend {
 		<<?php echo esc_attr( $tag ); ?>
 			class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>"
 			<?php if ( 'a' === $tag ) : ?>
-				href="<?php echo esc_url( $lang['url'] ); ?>"
+				href="<?php echo LSDP_Common_Helpers::esc_language_url( $lang['url'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped by esc_language_url(). ?>"
 				title="<?php echo esc_attr( $lang['name'] ); ?>"
 			<?php else : ?>
 				role="button"

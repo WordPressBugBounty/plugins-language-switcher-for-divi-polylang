@@ -41,7 +41,7 @@ trait RenderContentTrait
             $flag_icon = \LSDP_Common_Helpers::get_country_flag($lang['flag'], $lang['name']);
 
             $languages_html .= '<li class="lsdp-lang-item">';
-            $languages_html .= '<a href="' . esc_url($lang['url']) . '">';
+			$languages_html .= '<a href="' . \LSDP_Common_Helpers::esc_language_url( $lang['url'] ) . '">';
             if (!empty($props['show_language_flag']) && $props['show_language_flag'] === 'on') {
                 $languages_html .= '<div class="lsdp-lang-image">' . wp_kses_post($flag_icon) . '</div>';
             }
@@ -60,7 +60,7 @@ trait RenderContentTrait
     private static function get_active_language_html($lang, $props)
     {
         $html = '<span class="lsdp-active-language">';
-        $html .= '<a href="' . esc_url($lang['url']) . '">';
+		$html .= '<a href="' . \LSDP_Common_Helpers::esc_language_url( $lang['url'] ) . '">';
         if (!empty($props['show_language_flag']) && $props['show_language_flag'] === 'on') {
             $flag_icon = \LSDP_Common_Helpers::get_country_flag($lang['flag'], $lang['name']);
             $html .= '<div class="lsdp-lang-image">' . wp_kses_post($flag_icon) . '</div>';
@@ -85,7 +85,7 @@ trait RenderContentTrait
             }
 
             $flag_icon = \LSDP_Common_Helpers::get_country_flag($lang['flag'], $lang['name']);
-            $anchor_open = '<a href="' . esc_url($lang['url']) . '">';
+			$anchor_open  = '<a href="' . \LSDP_Common_Helpers::esc_language_url( $lang['url'] ) . '">';
             $anchor_close = '</a>';
 
             $html .= '<li class="lsdp-lang-item">';

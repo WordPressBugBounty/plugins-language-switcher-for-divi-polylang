@@ -225,7 +225,7 @@ class LSDP_Module extends ET_Builder_Module {
 
 				if ( $style === 'dropdown' ) {
 					$active_flag_icon = LSDP_Common_Helpers::get_country_flag( $languages[ $lang_curr ]['flag'], $languages[ $lang_curr ]['name'] );
-					$active_span       = '<span><a href="' . esc_url( $languages[ $lang_curr ]['url'] ) . '">';
+					$active_span      = '<span><a href="' . LSDP_Common_Helpers::esc_language_url( $languages[ $lang_curr ]['url'] ) . '">';
 					if ( 'on' === $flag_display ) {
 						$active_span .= sprintf(
 							'<div class="lsdp-lang-image">%s</div>',
@@ -264,7 +264,7 @@ class LSDP_Module extends ET_Builder_Module {
 					}
 					$flag_icon    = LSDP_Common_Helpers::get_country_flag( $lang['flag'], $lang['name'] );
 					$active_class = $lang_curr === $lang['slug'] ? 'lsdp_active_lang' : '';
-					$html        .= '<li class="' . esc_attr( $active_class ) . '"><a href="' . esc_url( $lang['url'] ) . '">';
+					$html        .= '<li class="' . esc_attr( $active_class ) . '"><a href="' . LSDP_Common_Helpers::esc_language_url( $lang['url'] ) . '">';
 					if ( 'on' === $flag_display ) {
 						$html .= sprintf(
 							'<div class="lsdp-lang-image">%s</div>',
